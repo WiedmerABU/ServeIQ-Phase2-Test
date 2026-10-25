@@ -1,14 +1,13 @@
-# ServeIQ Phase 2 – Design-Testversion (separat)
+# ServeIQ Phase 2 – Update Matchkader und Live-Game
 
-Basis: unveränderte Match- und Statistiklogik von ServeIQ v0.2. Grafisch erweitert nach Phase-2-Freigaben.
+Testversion auf Basis der vorhandenen Phase-2-Designversion. Alle Dateien direkt im Root eines separaten GitHub-Pages-Repositories hochladen.
 
-## Test
-Die index.html zusammen mit .webp/.png, manifest.webmanifest und icons/ auf GitHub Pages veröffentlichen.
-**Nicht** ins produktive Repository ServeIQ-v2 hochladen, bevor alle Funktionen getestet sind.
+## Anpassungen
+- Matchkader-Kacheln mit Nummer, Vorname und ausgeschriebener Position
+- Dunkelblauer Counter und sanft pulsierender hellblauer Servicerahmen
+- Grün: Ass, Normaler Service, Punkt VBC Interlaken; rot: Servicefehler, Punkt Gegner
+- Vier neutrale Funktionsbuttons bleiben vorhanden
+- Neuer Button **Aktuelle Aufstellung**, dessen Anzeige die aktive Rotations- und Wechselhistorie aus dem laufenden Spiel übernimmt und mit «Zurück» ohne Änderung zum Spiel führt
 
-## Hinweise
-- Die neue Version hat dieselbe lokale Datenablage wie v0.2: Bei gleicher GitHub-Pages-Origin kann sie dieselben Daten lesen. Auf separatem Repository testen und vorher JSON-Backup exportieren.
-- Spiel-/Statistikfunktionen im JS sind nicht verändert.
-- Die 7-Segment-Anmutung nutzt derzeit eine Monospace-Ziffernschrift als ersten Designstand, noch keine echte Segmentgeometrie.
-- Branding-Grafik ist aus den freigegebenen Vorschaubildern extrahiert; Original-Logo-Dateien wären für höchste Schärfe beim späteren Release besser.
-- Splash-Startfläche liegt bildgleich über dem sichtbaren Start-Button.
+## Testen
+Punkte, Seitenwechsel, Auswechslungen, Undo/Redo, Satzwechsel, Datenpersistenz und Aufstellungsanzeige in einer separaten Kopie prüfen. Die bisherige GitHub-Version nicht überschreiben.
