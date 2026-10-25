@@ -11,3 +11,15 @@ Testversion auf Basis der vorhandenen Phase-2-Designversion. Alle Dateien direkt
 
 ## Testen
 Punkte, Seitenwechsel, Auswechslungen, Undo/Redo, Satzwechsel, Datenpersistenz und Aufstellungsanzeige in einer separaten Kopie prüfen. Die bisherige GitHub-Version nicht überschreiben.
+
+## Update: vier Verbesserungen
+- Splash-Screen bei jedem Laden/Öffnen der Web-App, nicht beim Tabwechsel; Teams und Spiele bleiben gespeichert.
+- Matchkader-Spielerinnenkacheln kompakter (3 Spalten am Smartphone; 4 auf breiteren Geräten).
+- Gegner-Punktebuttons, egal in welchem Ballwechsel-Modus, hellrot wie der Servicefehler; eigene Punkte hellgrün.
+- Bei neuem Satz-/Matchgewinn durch VBC Interlaken 3 Sekunden überlagerndes Konfetti von oben nach unten über dem *gesamten* Bildschirm; keine Konfetti-Wiederholung bei erneutem Öffnen einer Ergebnisansicht.
+
+
+## Konfetti im Stil des Referenzvideos
+- 135 schmale, teilweise gebogene Papierstreifen in Blau und Türkis; keine Icons oder Emojis.
+- Fällt ungefähr 3 Sekunden von oben nach unten transparent über die gesamte App.
+- Animation erscheint nur bei Satzgewinn von VBC Interlaken; die bestehende Spiel-/Statistiklogik bleibt unverändert.

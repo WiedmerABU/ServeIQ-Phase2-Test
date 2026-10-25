@@ -127,6 +127,31 @@ body:before{content:"";position:fixed;inset:56px 0 0;pointer-events:none;backgro
 .live-lineup-outside{color:#fff;text-align:center;font-size:.7rem;letter-spacing:.08em;padding:7px}
 .lineup-libero{background:#fff;color:#16395e;border-radius:9px;padding:11px 12px;font-size:.89rem}
 @media(prefers-reduced-motion:reduce){.score-team.serving,.score-team.away-serving,.score-team.home-serving{animation:none}}
+
+/* Phase 2 follow-up: smaller match roster tiles for dense smartphone rosters. */
+.roster-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}
+.roster-tile{min-height:70px!important;padding:6px 3px!important;gap:2px!important;border-radius:9px!important}
+.roster-tile .tile-number{font-size:1.15rem!important;line-height:1.1!important}
+.roster-tile .tile-first{font-size:.78rem!important;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.roster-tile .tile-role{font-size:.69rem!important}
+.roster-tile em{top:2px!important;right:3px!important;font-size:.72rem!important}
+@media(min-width:650px){.roster-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.roster-tile{min-height:76px!important}}
+@media(max-width:350px){.roster-grid{gap:4px!important}.roster-tile{min-height:64px!important;padding:5px 2px!important}.roster-tile .tile-first{font-size:.72rem!important}}
+/* All opponent rally buttons use the same pale red as the service-error button. */
+.fault,.point-buttons .point-away,.point-away{background:#fbe9e9!important;color:#a42d2d!important;border:1px solid #daaaaa!important}
+.ace,.normal,.point-buttons .point-home,.point-home{background:#e5f3e9!important;color:#176038!important;border:1px solid #83b99a!important}
+/* Video-inspired paper confetti: blue/cyan strips, falling across entire viewport. No emoji/icons. */
+.confetti-overlay{position:fixed;inset:0;z-index:2147483646;pointer-events:none;overflow:hidden;contain:layout paint;isolation:isolate}
+.confetti-piece{position:absolute;top:-28px;left:var(--x);width:var(--w);height:var(--h);border-radius:var(--radius);background:var(--color);opacity:0;box-shadow:inset 1px 0 1px #ffffff55;transform-origin:50% 50%;will-change:transform,opacity;animation:serveiq-paperfall var(--dur) var(--delay) cubic-bezier(.31,.12,.65,.94) both}
+.confetti-piece::after{content:'';display:block;width:100%;height:100%;border-radius:inherit;transform:skewY(var(--bend)) rotateY(22deg);background:linear-gradient(105deg,#ffffff29,transparent 40%,#051b3840 90%)}
+@keyframes serveiq-paperfall{
+ 0%{opacity:0;transform:translate3d(0,-25px,0) rotate(var(--startrot)) rotateY(0deg) rotateX(0deg)}
+ 8%{opacity:1}
+ 85%{opacity:1}
+ 100%{opacity:0;transform:translate3d(var(--drift),calc(100dvh + 65px),0) rotate(var(--spin)) rotateY(var(--flip)) rotateX(380deg)}
+}
+@media(prefers-reduced-motion:reduce){.confetti-piece{animation:none;display:none}}
+
 </style></head><body><div id="app"><main class="loading">ServeIQ 0.2 wird geladen …</main></div><script type="module">// model
 /** ServeIQ v0.1 – pure, deterministic volleyball rules and statistics. */
 const VERSION = 1;
@@ -477,8 +502,9 @@ async function save(x){
 
 const root=document.getElementById('app');
 let data=newAppData();
+let splashPending=true; // Show the welcome screen once per page load, without resetting stored data.
 const ui={view:'teams',teamId:null,sortMode:'number',editingTeam:null,playerId:null,matchId:null,statsId:null,statsReturn:'archive',statsSet:0,statsPlayer:null,
-  info:'',modal:'',menuOpen:true,toast:'',wizardStep:0,draft:null,teamForm:null,pickerPos:0,analysisMode:'',analysisSubject:'team',analysisSet:0,teamDirty:false,startedDraft:false};
+  info:'',modal:'',menuOpen:true,toast:'',wizardStep:0,draft:null,teamForm:null,pickerPos:0,analysisMode:'',analysisSubject:'team',analysisSet:0,teamDirty:false,startedDraft:false,confettiKey:null};
 const esc=x=>String(x??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const attrs=x=>esc(x);
 const el=(x)=>document.querySelector(x);
@@ -635,9 +661,26 @@ function header(title='',subtitle=''){return `<header class="topbar"><button cla
 const back=(action='home',text='Zurück')=>`<button class="textlink backbutton" data-action="${action}">← ${text}</button>`;
 function homeScreen(){return `<div class="home-view"><div class="home-crest">🏐</div><h1>Serve<span class="iq-color">IQ</span></h1><p>Volleyball – Service – Score Tracker</p><small>Funktionsvorschau 0.2 · 6:6 · GitHub-Testversion</small></div>`;}
 function settingsScreen(){return `${back()}<h1>Einstellungen</h1><div class="panel form-stack"><button class="btn secondary" data-action="json-export">⇩ Datensicherung erstellen (JSON)</button><button class="btn secondary" data-action="json-import">⇧ Datensicherung importieren (JSON)</button><p class="small muted">Die Daten bleiben lokal auf diesem Gerät. Für die Übertragung auf andere Geräte eine JSON-Sicherung exportieren.</p><small>ServeIQ 0.2 · GitHub-Testversion</small></div>`;}
-function shell(content){return `${header()}<main class="main">${content}</main><nav class="bottom-nav ${ui.menuOpen?'':'is-collapsed'}" aria-label="Hauptnavigation"><button type="button" class="nav-handle" data-action="nav-handle" aria-label="Navigation einblenden"><span></span></button><button data-action="nav" data-view="teams" class="nav-item ${ui.view==='teams'?'active':''}">${icon('♙')}<span>Teams</span></button><button data-action="nav" data-view="new" class="nav-item ${ui.view==='new'?'active':''}">${icon('＋')}<span>Neues Spiel</span></button><button data-action="nav" data-view="live" class="nav-item ${ui.view==='live'?'active':''}">${icon('◉')}<span>Live-Game</span></button><button data-action="nav" data-view="archive" class="nav-item ${ui.view==='archive'?'active':''}">${icon('▤')}<span>Archiv</span></button></nav>${ui.toast?`<div class="toast" role="status">${esc(ui.toast)}</div>`:''}${modalHtml()}`;}
+
+// Blue-and-cyan paper strips inspired by the provided confetti video; no pictograms or emoji.
+// Rendered above all UI layers for about three seconds on a VBC Interlaken set win.
+function confettiOverlay(){
+ const palette=['#0B4DB4','#146BCA','#2681D9','#27AFE6','#55D5E8','#92F2FA','#2059A0','#3B96DD'];
+ let seed=20261025;
+ const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+ const parts=Array.from({length:135},(_,i)=>{
+  const x=(rand()*100).toFixed(2),delay=(rand()*.52).toFixed(2);
+  const dur=(2.42+rand()*.52).toFixed(2),drift=(rand()*260-130).toFixed(0);
+  const spin=(rand()*1180-590).toFixed(0),flip=(720+rand()*1440).toFixed(0);
+  const w=(3+rand()*6).toFixed(1),h=(8+rand()*14).toFixed(1);
+  const radius=rand()>.67?'45% 9% 50% 8%':'1px';
+  return `<span class="confetti-piece" style="--x:${x}vw;--delay:${delay}s;--dur:${dur}s;--drift:${drift}px;--spin:${spin}deg;--flip:${flip}deg;--startrot:${(rand()*300).toFixed(0)}deg;--bend:${(rand()*70-35).toFixed(0)}deg;--radius:${radius};--w:${w}px;--h:${h}px;--color:${palette[Math.floor(rand()*palette.length)]}"></span>`;
+ }).join('');
+ return `<div class="confetti-overlay" aria-hidden="true">${parts}</div>`;
+}
+function shell(content){return `${header()}<main class="main">${content}</main><nav class="bottom-nav ${ui.menuOpen?'':'is-collapsed'}" aria-label="Hauptnavigation"><button type="button" class="nav-handle" data-action="nav-handle" aria-label="Navigation einblenden"><span></span></button><button data-action="nav" data-view="teams" class="nav-item ${ui.view==='teams'?'active':''}">${icon('♙')}<span>Teams</span></button><button data-action="nav" data-view="new" class="nav-item ${ui.view==='new'?'active':''}">${icon('＋')}<span>Neues Spiel</span></button><button data-action="nav" data-view="live" class="nav-item ${ui.view==='live'?'active':''}">${icon('◉')}<span>Live-Game</span></button><button data-action="nav" data-view="archive" class="nav-item ${ui.view==='archive'?'active':''}">${icon('▤')}<span>Archiv</span></button></nav>${ui.confettiKey?confettiOverlay():''}${ui.toast?`<div class="toast" role="status">${esc(ui.toast)}</div>`:''}${modalHtml()}`;}
 function renderAtTop(){render();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant'}));}
-function render(){const prevModal=root.querySelector('.nextset-modal');const previousModalScroll=prevModal?.scrollTop||0;const prevY=window.scrollY;if(!data.introSeen){root.innerHTML=`<main class="splash"><div class="splash-ball">🏐</div><div class="wordmark">Serve<span>IQ</span></div><p>Volleyball – Service – Score Tracker</p><button class="btn primary huge" data-action="intro">START</button><small>Funktionsprototyp · Version 0.2</small></main>`;return;}
+function render(){const prevModal=root.querySelector('.nextset-modal');const previousModalScroll=prevModal?.scrollTop||0;const prevY=window.scrollY;if(splashPending){root.innerHTML=`<main class="splash"><div class="splash-ball">🏐</div><div class="wordmark">Serve<span>IQ</span></div><p>Volleyball – Service – Score Tracker</p><button class="btn primary huge" data-action="intro">START</button><small>Funktionsprototyp · Version 0.2</small></main>`;return;}
   let content=ui.view==='home'?homeScreen():ui.view==='settings'?settingsScreen():ui.view==='teams'?teamsScreen():ui.view==='new'?newScreen():ui.view==='live'?liveScreen():ui.view==='current-lineup'?currentLineupScreen():archiveScreen();
   root.innerHTML=shell(content);if(ui.modal==='nextset'){const nextModal=root.querySelector('.nextset-modal');if(nextModal)nextModal.scrollTop=previousModalScroll;}if(prevY&&ui.modal==='nextset')window.scrollTo(0,prevY); }
 function ongoingCards() {
@@ -743,7 +786,7 @@ function currentLineupScreen(){
  const libero=m.teamSnapshot.players.find(p=>p.id===s.liberoId);
  return `<button class="btn secondary lineup-back" data-action="lineup-current-back">← Zurück</button><section class="screen-head"><div><h1>Aktuelle Aufstellung</h1><p>Satz ${s.number} · ${esc(m.teamSnapshot.club)} ${s.home}:${s.away} ${esc(m.opponent)}</p></div></section><div class="current-lineup-panel"><div class="court-net">NETZ</div><div class="live-lineup-court">${displayOrder.map(cell).join('')}</div><div class="live-lineup-baseline"></div><div class="live-lineup-outside">AUSLAUFZONE</div><div class="lineup-libero">Libero: ${libero?`${esc(libero.number)} · ${esc(libero.first)} ${esc(libero.last)}`:'keiner'}</div></div><p class="small muted">Ansicht zum aktuellen Spielstand, inklusive Rotationen und regulären Spielerwechseln. Keine Bearbeitung.</p><button class="btn secondary lineup-back" data-action="lineup-current-back">← Zurück zum Live-Game</button>`;
 }
-function endOfSet(m,st){const s=st.current;return `${back()}${s.winner==='home'?'<div class="confetti" aria-hidden="true">🎉 ✨ 🎊 ✨ 🎉</div>':''}${scoreBoard(m,st,s,false)}
+function endOfSet(m,st){const s=st.current;return `${back()}${scoreBoard(m,st,s,false)}
  <div class="win-panel">🏆<h1>${st.finished?'Spiel beendet':`Satz ${s.number} beendet`}</h1><p>${s.winner==='home'?esc(m.teamSnapshot.club):esc(m.opponent)} gewinnt ${s.home}:${s.away}</p>
  <div class="action-row">${st.finished?`<button class="btn primary" data-action="stats-open" data-id="${m.id}">Spielstatistik</button><button class="btn secondary" data-action="nav" data-view="archive">Zum Archiv</button>`:`<button class="btn primary" data-action="prepare-set">Nächsten Satz vorbereiten</button><button class="btn secondary" data-action="stats-open" data-id="${m.id}">Satzstatistik</button>`}</div></div>
  <div class="action-row endset-point-correction"><button class="btn secondary" data-action="point-undo" ${canUndoPoint(m)?'':'disabled'}>↶ Punkt zurücknehmen</button><button class="btn secondary" data-action="point-redo" ${canRedoPoint(m)?'':'disabled'}>↷ Punkt vorwärts</button></div>`;
@@ -924,7 +967,18 @@ function captureDraftForm(){
  }
 }
 function confirmAction(msg,fn){ui.modal='confirm';ui.alertText=msg;ui.confirmFn=fn;render();}
-function afterEvent(event){const m=mcurrent();try{const x=pushEvent(m,event);data.matches[data.matches.findIndex(k=>k.id===m.id)]=x;commit();render();return true;}catch(err){showAlert(err.message);return false;}}
+function afterEvent(event){const m=mcurrent();try{
+ const before=replay(m).current;
+ const x=pushEvent(m,event);
+ const after=replay(x).current;
+ const newlyWon=event.type==='RALLY'&&before&&!before.winner&&after?.winner==='home';
+ if(newlyWon)ui.confettiKey=`${x.id}-${after.number}-${x.events.length}`;
+ data.matches[data.matches.findIndex(k=>k.id===m.id)]=x;commit();render();
+ if(newlyWon){const key=ui.confettiKey;setTimeout(()=>{
+   if(ui.confettiKey===key){ui.confettiKey=null;root.querySelector('.confetti-overlay')?.remove();}
+ },3000);}
+ return true;
+ }catch(err){showAlert(err.message);return false;}}
 function navigate(view){ui.menuOpen=true;armNav();ui.view=view;ui.modal='';ui.teamId=null;ui.editingTeam=null;if(view!=='archive')ui.statsId=null;
   if(view==='live'){const chosen=data.matches.find(x=>x.id===ui.matchId&&!x.archivedEarly&&!replay(x).finished);const a=chosen||activeMatch();if(a)ui.matchId=a.id;}
   commit();renderAtTop();}
@@ -933,7 +987,7 @@ root.addEventListener('click',async e=>{
   if(b.tagName==='BUTTON')e.preventDefault();
   const action=b.dataset.action,id=b.dataset.id;
   try{switch(action){
-    case'intro':data.introSeen=true;ui.view='teams';ui.menuOpen=true;armNav();commit();render();break;
+    case'intro':splashPending=false;data.introSeen=true;ui.view='teams';ui.menuOpen=true;armNav();commit();render();break;
     case'home':if(ui.editingTeam){confirmAction('Teamerstellung verlassen? Nicht gespeicherte Eingaben werden verworfen.',()=>{ui.editingTeam=false;ui.teamForm=null;navigate('teams');});break;}if(ui.draft){captureDraftForm();ui.modal='draft-exit';render();break;}navigate('teams');break;
     case'settings':ui.view='settings';ui.modal='';render();break;
     case'nav':if(ui.editingTeam){const target=b.dataset.view;confirmAction('Teamerstellung verlassen? Nicht gespeicherte Eingaben werden verworfen.',()=>{ui.editingTeam=false;ui.teamForm=null;navigate(target);});break;}if(ui.draft){captureDraftForm();ui.modal='draft-exit';render();break;}navigate(b.dataset.view);break;
