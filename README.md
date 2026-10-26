@@ -1,21 +1,19 @@
-# ServeIQ Phase 2 – Update Matchkader und Live-Game
+# ServeIQ Phase 2 – Update 26.10.2026
 
-Testversion auf Basis der vorhandenen Phase-2-Designversion. Alle Dateien direkt im Root eines separaten GitHub-Pages-Repositories hochladen.
+Technische Testversion basierend auf der vorherigen Phase-2-Version.
 
-## Anpassungen
-- Matchkader-Kacheln mit Nummer, Vorname und ausgeschriebener Position
-- Dunkelblauer Counter und sanft pulsierender hellblauer Servicerahmen
-- Grün: Ass, Normaler Service, Punkt VBC Interlaken; rot: Servicefehler, Punkt Gegner
-- Vier neutrale Funktionsbuttons bleiben vorhanden
-- Neuer Button **Aktuelle Aufstellung**, dessen Anzeige die aktive Rotations- und Wechselhistorie aus dem laufenden Spiel übernimmt und mit «Zurück» ohne Änderung zum Spiel führt
+## Änderungen
+- Home/Teams: genehmigter Info-Text zu Ass, normalem Service, Servicefehler, Counter, Statistiken.
+- Teams: laufende Spiele und Spielerstellen-Button bleiben entfernt.
+- Neues Spiel: Button «+ Spiel erstellen» immer oben, darunter bei Bedarf «Laufende Spiele» (Öffnen, Löschen) und «Entwürfe» (Entwurf fortsetzen).
+- Aufstellung: die Beschriftung «Auslaufzone» entfernt, blaue Zone bleibt.
+- Auswählbare Spielerinnen-Kacheln kompakter auf Smartphone, mit Nummer, Vorname und Rolle.
+- Libera im Auswahlraster rosa, separat auf Libera-Ablageplatz ziehbar/tippbar; sechs reguläre Rotationsslots unverändert. Auch in der nächsten Satzaufstellung.
+- Splash-Screen bei jedem frischen Öffnen der Webseite, ohne die gespeicherten Teams, Spiele und Entwürfe zu löschen.
+- Lokales Splash-Screen-Bild als eigene PNG-Datei beigelegt.
 
-## Testen
-Punkte, Seitenwechsel, Auswechslungen, Undo/Redo, Satzwechsel, Datenpersistenz und Aufstellungsanzeige in einer separaten Kopie prüfen. Die bisherige GitHub-Version nicht überschreiben.
+## GitHub Pages
+Alle Dateien im ZIP in das Stammverzeichnis des Repositories `ServeIQ-Phase2-Test` hochladen, vorhandene Dateien überschreiben. `index.html` muss im Stammverzeichnis bleiben. Nach Update Seite neu laden (Strg+F5).
 
-
-## Phase 2 – Teams und gemeinsames Spielfeld (26.10.2026)
-- Teams: Bereich «Laufende Spiele» und Button «Spiel erstellen» entfernt. Laufende Spiele und Entwürfe sind weiterhin in «Neues Spiel».
-- Startaufstellung Satz 1 und Sätze 2–5: gleiche Spielfeldgrafik wie die read-only Ansicht «Aktuelle Aufstellung» im Live-Game.
-- Gemeinsame Renderer-Funktion `lineupCourtShell`; interaktive Positions-Buttons und gespeicherte Rotations-/Statistiklogik unverändert.
-- GitHub Pages: vier Dateien direkt ins Repository-Hauptverzeichnis hochladen.
-- Vor Einsatz den Ablauf Teams → Neues Spiel → Matchkader → Aufstellung → Live-Game → Aktuelle Aufstellung sowie Satzwechsel prüfen.
+## Testhinweise
+Vor Produktion alle Aktionen auf Smartphone und Browser prüfen: Entwurf fortsetzen, Libera setzen und entfernen, Aufstellungswechsel, Servicepunkte, Rotation und Archiv. JavaScript-Syntaxprüfung ist kein vollständiger Browser-Test.

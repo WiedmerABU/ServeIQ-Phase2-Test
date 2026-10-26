@@ -91,7 +91,7 @@ body:before{content:"";position:fixed;inset:56px 0 0;pointer-events:none;backgro
 .baseline{background:#246fac;color:#fff;letter-spacing:.08em;margin:0;padding:6px}
 .archive-score{font-weight:850;color:#142c50}
 .tag{border-radius:8px}
-.splash{position:relative;background:linear-gradient(180deg,#0b2850,#065493);background-image:url('./splash-screen.webp');background-position:center;background-size:cover;min-height:100dvh}
+.splash{position:relative;background:linear-gradient(180deg,#0b2850,#065493);background-image:url('./splash-screen.png');background-position:center;background-size:cover;min-height:100dvh}
 .splash>*{visibility:hidden}
 .splash .btn{visibility:visible;position:absolute;bottom:10%;left:50%;transform:translateX(-50%);background:#0874d5;color:#fff;width:min(295px,78vw);opacity:.01}
 .splash .btn:focus-visible{opacity:1}
@@ -141,6 +141,29 @@ body:before{content:"";position:fixed;inset:56px 0 0;pointer-events:none;backgro
 .nextset-modal .live-lineup-court{grid-template-rows:repeat(2,minmax(80px,auto));row-gap:7px;padding:8px 5px 15px}
 .nextset-modal .live-lineup-tile{min-height:57px}
 @media(max-width:390px){.lineup-edit-panel{padding:7px}.lineup-edit-panel .live-lineup-court{gap:5px;grid-template-rows:repeat(2,minmax(91px,auto));padding:9px 5px 15px}.lineup-edit-panel .live-lineup-tile{min-height:70px}}
+
+/* ServeIQ Phase 2 October update: compact selection and separate draggable Libero */
+.lineup-edit-panel + .libero-station{margin:9px 0 10px}
+.roster-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important}
+.roster-grid .roster-tile{min-height:65px!important;padding:4px 2px!important;border-radius:8px!important;gap:1px!important;position:relative;min-width:0!important}
+.roster-grid .roster-tile .tile-number{font-size:1.13rem!important}
+.roster-grid .roster-tile .tile-first{font-size:.76rem!important;line-height:1.13;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.roster-grid .roster-tile .tile-role{font-size:.64rem!important;line-height:1.1}
+.roster-grid .roster-tile em{position:absolute;right:2px;top:1px;font-size:.72rem}
+.roster-grid .roster-tile.libero-tile,.roster-grid .roster-tile.libero-tile.picked{background:#f8dce8!important;color:#6d2847!important;border:1px solid #d9aac1!important}
+.roster-grid .roster-tile.libero-tile.chosen{outline:2px solid white;outline-offset:-4px;box-shadow:0 0 0 2px #cf84ac}
+.libero-station{background:#fff;border:1px solid #ead0dd;border-radius:11px;padding:10px;display:flex;flex-direction:column;gap:5px}
+.libero-station strong{color:#62314d;font-size:.85rem}
+.libero-station small{font-size:.75rem;color:#70566a}
+.libero-drop{width:100%;min-height:47px;background:#f9e1ea;border:2px dashed #cf97b3;border-radius:9px;color:#713a55;font-weight:700}
+.libero-drop.occupied{border-style:solid}
+.libero-drop span{font-weight:400;font-size:.78rem}
+.live-lineup-outside{height:10px!important;padding:0!important;font-size:0!important}
+.home-intro{font-size:.89rem;line-height:1.4}
+.home-intro p{margin:6px 0}
+.home-intro h2{margin:0 0 8px;color:#103e71}
+@media(min-width:600px){.roster-grid{grid-template-columns:repeat(6,minmax(0,1fr))!important}}
+@media(max-width:360px){.roster-grid .roster-tile .tile-first{font-size:.69rem!important}.roster-grid{gap:3px!important}}
 </style></head><body><div id="app"><main class="loading">ServeIQ 0.2 wird geladen …</main></div><script type="module">// model
 /** ServeIQ v0.1 – pure, deterministic volleyball rules and statistics. */
 const VERSION = 1;
@@ -491,7 +514,7 @@ async function save(x){
 
 const root=document.getElementById('app');
 let data=newAppData();
-const ui={view:'teams',teamId:null,sortMode:'number',editingTeam:null,playerId:null,matchId:null,statsId:null,statsReturn:'archive',statsSet:0,statsPlayer:null,
+const ui={showSplash:true,view:'teams',teamId:null,sortMode:'number',editingTeam:null,playerId:null,matchId:null,statsId:null,statsReturn:'archive',statsSet:0,statsPlayer:null,
   info:'',modal:'',menuOpen:true,toast:'',wizardStep:0,draft:null,teamForm:null,pickerPos:0,analysisMode:'',analysisSubject:'team',analysisSet:0,teamDirty:false,startedDraft:false};
 const esc=x=>String(x??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const attrs=x=>esc(x);
@@ -651,7 +674,7 @@ function homeScreen(){return `<div class="home-view"><div class="home-crest">�
 function settingsScreen(){return `${back()}<h1>Einstellungen</h1><div class="panel form-stack"><button class="btn secondary" data-action="json-export">⇩ Datensicherung erstellen (JSON)</button><button class="btn secondary" data-action="json-import">⇧ Datensicherung importieren (JSON)</button><p class="small muted">Die Daten bleiben lokal auf diesem Gerät. Für die Übertragung auf andere Geräte eine JSON-Sicherung exportieren.</p><small>ServeIQ 0.2 · GitHub-Testversion</small></div>`;}
 function shell(content){return `${header()}<main class="main">${content}</main><nav class="bottom-nav ${ui.menuOpen?'':'is-collapsed'}" aria-label="Hauptnavigation"><button type="button" class="nav-handle" data-action="nav-handle" aria-label="Navigation einblenden"><span></span></button><button data-action="nav" data-view="teams" class="nav-item ${ui.view==='teams'?'active':''}">${icon('♙')}<span>Teams</span></button><button data-action="nav" data-view="new" class="nav-item ${ui.view==='new'?'active':''}">${icon('＋')}<span>Neues Spiel</span></button><button data-action="nav" data-view="live" class="nav-item ${ui.view==='live'?'active':''}">${icon('◉')}<span>Live-Game</span></button><button data-action="nav" data-view="archive" class="nav-item ${ui.view==='archive'?'active':''}">${icon('▤')}<span>Archiv</span></button></nav>${ui.toast?`<div class="toast" role="status">${esc(ui.toast)}</div>`:''}${modalHtml()}`;}
 function renderAtTop(){render();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant'}));}
-function render(){const prevModal=root.querySelector('.nextset-modal');const previousModalScroll=prevModal?.scrollTop||0;const prevY=window.scrollY;if(!data.introSeen){root.innerHTML=`<main class="splash"><div class="splash-ball">🏐</div><div class="wordmark">Serve<span>IQ</span></div><p>Volleyball – Service – Score Tracker</p><button class="btn primary huge" data-action="intro">START</button><small>Funktionsprototyp · Version 0.2</small></main>`;return;}
+function render(){const prevModal=root.querySelector('.nextset-modal');const previousModalScroll=prevModal?.scrollTop||0;const prevY=window.scrollY;if(ui.showSplash){root.innerHTML=`<main class="splash"><div class="splash-ball">🏐</div><div class="wordmark">Serve<span>IQ</span></div><p>Volleyball – Service – Score Tracker</p><button class="btn primary huge" data-action="intro">START</button><small>Funktionsprototyp · Version 0.2</small></main>`;return;}
   let content=ui.view==='home'?homeScreen():ui.view==='settings'?settingsScreen():ui.view==='teams'?teamsScreen():ui.view==='new'?newScreen():ui.view==='live'?liveScreen():ui.view==='current-lineup'?currentLineupScreen():archiveScreen();
   root.innerHTML=shell(content);if(ui.modal==='nextset'){const nextModal=root.querySelector('.nextset-modal');if(nextModal)nextModal.scrollTop=previousModalScroll;}if(prevY&&ui.modal==='nextset')window.scrollTo(0,prevY); }
 function ongoingCards() {
@@ -663,14 +686,14 @@ function ongoingCards() {
 function draftCard() {
   if(!data.draft)return '';
   const team=data.teams.find(x=>x.id===data.draft.teamId);
-  return `<section class="panel"><b>Gespeicherter Entwurf</b><h3>${esc(team?.club||'Team')} – ${esc(data.draft.opponent||'Gegner noch offen')}</h3><p class="muted small">Spielvorbereitung noch nicht abgeschlossen</p><button class="btn secondary wide" data-action="resume-draft">Vorbereitung fortsetzen</button></section>`;
+  return `<section class="panel"><b>Entwurf</b><h3>${esc(team?.club||'Team')} – ${esc(data.draft.opponent||'Gegner noch offen')}</h3><p class="muted small">Spielvorbereitung noch nicht abgeschlossen</p><button class="btn secondary wide" data-action="resume-draft">Entwurf fortsetzen</button></section>`;
 }
 function teamsScreen(){
   if(ui.editingTeam)return teamEditor();
   const team=data.teams.find(x=>x.id===ui.teamId);
   if(team)return teamDetails(team);
   return `<section class="screen-head"><div><h1>Teams</h1><p>Mannschaften und Kader verwalten</p></div><button class="btn primary" data-action="new-team">＋ Neues Team</button></section>
-   <h2>Vorhandene Teams</h2>${data.teams.length?data.teams.map(t=>`<button class="item-card" data-action="team-open" data-id="${t.id}"><span><strong>${esc(t.club)}</strong><small>${esc(t.category)} · ${esc(t.league)}${t.group?` · Gruppe ${esc(t.group)}`:''}</small><small>${esc(t.season)}</small></span>${icon('›')}</button>`).join(''):'<div class="empty">Noch keine Teams vorhanden.</div>'}`;
+   <section class="panel home-intro"><h2>Willkommen bei ServeIQ!</h2><p><strong>Dein Service- und Score-Tracker für Volleyball.</strong></p><p>Erfasse während des Spiels mit wenigen Klicks <strong>Asse, normale Services und Servicefehler</strong>. Der Live-Counter zählt die Punkte und Sätze automatisch mit.</p><p>Analysiere anschliessend die <strong>Serviceleistung jeder Spielerin und des gesamten Teams</strong> – übersichtlich nach Sätzen und als Gesamtauswertung.</p></section><h2>Vorhandene Teams</h2>${data.teams.length?data.teams.map(t=>`<button class="item-card" data-action="team-open" data-id="${t.id}"><span><strong>${esc(t.club)}</strong><small>${esc(t.category)} · ${esc(t.league)}${t.group?` · Gruppe ${esc(t.group)}`:''}</small><small>${esc(t.season)}</small></span>${icon('›')}</button>`).join(''):'<div class="empty">Noch keine Teams vorhanden.</div>'}`;
 }
 const seasonOptions=()=>{const date=new Date();let y=date.getFullYear();if(date.getMonth()<9)y--;return Array.from({length:6},(_,i)=>`${y+i}/${String((y+i+1)%100).padStart(2,'0')}`);};
 const selectOpt=(opts,val)=>opts.map(v=>`<option value="${attrs(v)}" ${val===v?'selected':''}>${esc(v)}</option>`).join('');
@@ -704,10 +727,10 @@ function playerModal(){const t=data.teams.find(x=>x.id===ui.teamId),p=t?.players
     ${p?`<button class="btn danger-ghost" type="button" data-action="player-delete" data-id="${p.id}">Spielerin löschen</button>`:''}
     </form></section></div>`;
 }
-function rosterCards(players,ids,action='roster-card') {return `<div class="roster-grid">${players.map(p=>`<button type="button" class="roster-tile ${ids.includes(p.id)?'chosen':''}" data-action="${action}" data-id="${p.id}" aria-pressed="${ids.includes(p.id)}" ${action==='court-player'?'draggable="true"':''}><b class="tile-number">${esc(p.number)}</b><span class="tile-first">${esc(p.first)}</span><span class="tile-role">${esc(({P:'Pass',M:'Mitte',A:'Aussen',D:'Diagonal',L:'Libero'})[p.position]||'–')}</span>${ids.includes(p.id)?'<em>✓</em>':''}</button>`).join('')}</div>`;}
+function rosterCards(players,ids,action='roster-card') {return `<div class="roster-grid">${players.map(p=>`<button type="button" class="roster-tile ${p.position==='L'?'libero-tile':''} ${ids.includes(p.id)?'chosen':''}" data-action="${action}" data-id="${p.id}" aria-pressed="${ids.includes(p.id)}" ${action==='court-player'?'draggable="true"':''}><b class="tile-number">${esc(p.number)}</b><span class="tile-first">${esc(p.first)}</span><span class="tile-role">${esc(({P:'Pass',M:'Mitte',A:'Aussen',D:'Diagonal',L:'Libero'})[p.position]||'–')}</span>${ids.includes(p.id)?'<em>✓</em>':''}</button>`).join('')}</div>`;}
 // Shared visual court shell: same pitch, net, baseline and run-off for setup and current lineup.
 function lineupCourtShell(cells, mode='view'){
- return `<div class="current-lineup-panel ${mode==='edit'?'lineup-edit-panel':''}"><div class="court-net">NETZ</div><div class="live-lineup-court ${mode==='edit'?'lineup-edit-court':''}">${cells}</div><div class="live-lineup-baseline"></div><div class="live-lineup-outside">AUSLAUFZONE</div></div>`;
+ return `<div class="current-lineup-panel ${mode==='edit'?'lineup-edit-panel':''}"><div class="court-net">NETZ</div><div class="live-lineup-court ${mode==='edit'?'lineup-edit-court':''}">${cells}</div><div class="live-lineup-baseline"></div><div class="live-lineup-outside" aria-hidden="true"></div></div>`;
 }
 function courtUi(d,t,isNext=false){
  const players=t.players.filter(p=>d.rosterIds.includes(p.id)&&p.position!=='L');
@@ -717,11 +740,11 @@ function courtUi(d,t,isNext=false){
    const p=t.players.find(x=>x.id===d.lineup[i]);
    return `<button type="button" class="live-lineup-position volley-slot ${p?'filled':''}" data-action="${isNext?'next-position':'court-position'}" data-pos="${i}" data-drop="${i}" aria-label="Position ${i+1}${p?', '+esc(p.first)+' '+esc(p.last):', frei'}"><small>Position ${i+1}</small><span class="live-lineup-tile">${p?`<strong>${esc(p.number)}</strong><span>${esc(p.first)} ${esc(p.last)}</span><small>${esc(names[p.position]||'–')}</small>`:'<strong>＋</strong><span>Spielerin wählen</span>'}</span></button>`;
  };
- return `${lineupCourtShell(gridOrder.map(slot).join(''),'edit')}<div class="libero-station"><label>Libera</label><select data-action="${isNext?'next-libero':'libero-select'}"><option value="">Keine Libera</option>${t.players.filter(p=>p.position==='L'&&d.rosterIds.includes(p.id)).map(p=>`<option value="${p.id}" ${d.liberoId===p.id?'selected':''}>${esc(playerLabel(p))}</option>`).join('')}</select><small>Libera. Wird nicht in Statistik erwähnt, da kein Service.</small></div><h3>Spielerinnen auswählen / ziehen</h3>${rosterCards(players,d.lineup.filter(Boolean),'court-player')}<p class="small muted">Kachel antippen und danach Feldposition wählen – oder auf das Feld ziehen.</p>`;
+ return `${lineupCourtShell(gridOrder.map(slot).join(''),'edit')}<div class="libero-station"><strong>Libera (separater Platz, keine Rotationsposition)</strong><button type="button" class="libero-drop ${d.liberoId?'occupied':''}" data-action="court-libero" data-drop="-1" aria-label="Libera auf separaten Platz setzen oder entfernen">${d.liberoId?(()=>{const p=t.players.find(x=>x.id===d.liberoId);return p?`<b>${esc(p.number)}</b> · ${esc(p.first)} · Libero <span>✕ entfernen</span>`:'Libera wählen';})():'＋ Rosa Libero-Kachel hier ablegen'}</button><small>Die Libera ist kein Rotationsplatz und serviert nicht.</small></div><h3>Spielerinnen auswählen / ziehen</h3>${rosterCards(t.players.filter(p=>d.rosterIds.includes(p.id)),[...d.lineup.filter(Boolean),d.liberoId].filter(Boolean),'court-player')}<p class="small muted">Kachel antippen und danach Feldposition bzw. Libera-Platz wählen – oder dorthin ziehen.</p>`;
 }
-function lineupValidation(d){let missing=[];if(d.lineup.filter(Boolean).length!==6)missing.push('Sechs reguläre Spielerinnen aufstellen');if(new Set(d.lineup.filter(Boolean)).size!==d.lineup.filter(Boolean).length)missing.push('Spielerin doppelt aufgestellt');if(d.liberoId&&d.lineup.includes(d.liberoId))missing.push('Libera separat auswählen');if(!d.lineup.filter(Boolean).every(id=>d.rosterIds.includes(id)))missing.push('Nur Matchkader-Spielerinnen einsetzen');if(!d.side)missing.push('Spielfeldseite wählen');if(!d.firstServe)missing.push('Ersten Service festlegen');return missing;}
+function lineupValidation(d){let missing=[];if(d.lineup.filter(Boolean).length!==6)missing.push('Sechs reguläre Spielerinnen aufstellen');if(new Set(d.lineup.filter(Boolean)).size!==d.lineup.filter(Boolean).length)missing.push('Spielerin doppelt aufgestellt');if(d.liberoId&&d.lineup.includes(d.liberoId))missing.push('Libera darf keine Rotationsposition besetzen');if(!d.lineup.filter(Boolean).every(id=>d.rosterIds.includes(id)))missing.push('Nur Matchkader-Spielerinnen einsetzen');if(!d.side)missing.push('Spielfeldseite wählen');if(!d.firstServe)missing.push('Ersten Service festlegen');return missing;}
 function newScreen(){
- if(!ui.draft){return `${back()}<section class="screen-head"><h1>Neues Spiel</h1></section>${ongoingCards()}${draftCard()}<button class="btn primary huge wide" data-action="start-wizard" ${data.teams.length?'':'disabled'}>＋ Spiel erstellen</button>${data.teams.length?'':'<p>Bitte zuerst ein Team erstellen. Mindestens sechs reguläre Spielerinnen werden für die Startaufstellung benötigt.</p>'}`;}
+ if(!ui.draft){const games=ongoingCards(),draft=draftCard();return `${back()}<section class="screen-head"><h1>Neues Spiel</h1></section><button class="btn primary huge wide" data-action="start-wizard" ${data.teams.length?'':'disabled'}>＋ Spiel erstellen</button>${data.teams.length?'':'<p>Bitte zuerst ein Team erstellen. Mindestens sechs reguläre Spielerinnen werden für die Startaufstellung benötigt.</p>'}${games?`<h2>Laufende Spiele</h2>${games}`:''}${draft?`<h2>Entwürfe</h2>${draft}`:''}`;}
  const d=ui.draft,t=data.teams.find(x=>x.id===d.teamId);const hdr=`${back('wizard-exit')}<h1>Neues Spiel · ${['Spieldaten','Matchkader','Startaufstellung','Zusammenfassung'][ui.wizardStep]}</h1>`;
  if(ui.wizardStep===0)return `${hdr}<form class="panel form-stack" data-form="match-basic"><label>Eigenes Team<select name="teamId" required>${data.teams.map(t=>`<option value="${t.id}" ${t.id===d.teamId?'selected':''}>${esc(teamName(t))}</option>`).join('')}</select></label><label>Gegner<input name="opponent" placeholder="Gegnerischer Verein" required value="${attrs(d.opponent)}"></label><label>Datum<input name="date" type="date" required value="${attrs(d.date)}"></label><button class="btn primary" type="button" data-action="match-basic-save">Matchkader erstellen</button></form>`;
  if(!t)return `${hdr}<p>Team nicht gefunden.</p>`;
@@ -949,7 +972,7 @@ root.addEventListener('click',async e=>{
   if(b.tagName==='BUTTON')e.preventDefault();
   const action=b.dataset.action,id=b.dataset.id;
   try{switch(action){
-    case'intro':data.introSeen=true;ui.view='teams';ui.menuOpen=true;armNav();commit();render();break;
+    case'intro':ui.showSplash=false;data.introSeen=true;ui.view='teams';ui.menuOpen=true;armNav();commit();render();break;
     case'home':if(ui.editingTeam){confirmAction('Teamerstellung verlassen? Nicht gespeicherte Eingaben werden verworfen.',()=>{ui.editingTeam=false;ui.teamForm=null;navigate('teams');});break;}if(ui.draft){captureDraftForm();ui.modal='draft-exit';render();break;}navigate('teams');break;
     case'settings':ui.view='settings';ui.modal='';render();break;
     case'nav':if(ui.editingTeam){const target=b.dataset.view;confirmAction('Teamerstellung verlassen? Nicht gespeicherte Eingaben werden verworfen.',()=>{ui.editingTeam=false;ui.teamForm=null;navigate(target);});break;}if(ui.draft){captureDraftForm();ui.modal='draft-exit';render();break;}navigate(b.dataset.view);break;
@@ -985,7 +1008,8 @@ root.addEventListener('click',async e=>{
       if(!ids.includes(id)&&t.players.some(p=>ids.includes(p.id)&&Number(p.number)===Number(player.number)))throw Error(`Trikotnummer ${player.number} ist bereits im Matchkader vergeben.`);
       ui.draft.rosterIds=ids.includes(id)?ids.filter(x=>x!==id):[...ids,id];render();break;}
     case'court-player':ui.pickedPlayer=id;document.querySelectorAll('[data-action="court-player"]').forEach(x=>x.classList.toggle('picked',x.dataset.id===id));break;
-    case'court-position':{const pos=Number(b.dataset.pos),d=ui.draft;const x=ui.pickedPlayer;if(x){const old=d.lineup.indexOf(x);if(old>=0)d.lineup[old]='';d.lineup[pos]=x;ui.pickedPlayer=null;}else{ui.pickerPos=pos;ui.modal='pick-player';}ui.missing=[];render();break;}
+    case'court-position':{const pos=Number(b.dataset.pos),d=ui.draft;const x=ui.pickedPlayer;if(x){const p=data.teams.find(t=>t.id===d.teamId)?.players.find(p=>p.id===x);if(!p||p.position==='L')throw Error('Libera bitte auf den separaten rosa Libera-Platz ziehen.');const old=d.lineup.indexOf(x);if(old>=0)d.lineup[old]='';d.lineup[pos]=x;ui.pickedPlayer=null;}else{ui.pickerPos=pos;ui.modal='pick-player';}ui.missing=[];render();break;}
+    case'court-libero':{const d=placingContext();if(!d)break;const id=ui.pickedPlayer;if(!id){d.liberoId='';ui.missing=[];render();break;}const roster=ui.modal==='nextset'?mcurrent()?.teamSnapshot.players:data.teams.find(t=>t.id===d.teamId)?.players;const player=roster?.find(p=>p.id===id);if(!player||player.position!=='L'||!d.rosterIds.includes(id))throw Error('Auf dem Libera-Platz ist nur eine ausgewählte Libera erlaubt.');d.liberoId=id;ui.pickedPlayer=null;ui.missing=[];render();break;}
     case'next-position':{
       const pos=Number(b.dataset.pos),d=ui.nextOptions;
       if(ui.pickedPlayer){
@@ -1117,11 +1141,13 @@ let swipeStart=0;root.addEventListener('touchstart',e=>{if(e.touches.length===1&
 let dragging=null;
 function placingContext(){return ui.modal==='nextset'?ui.nextOptions:ui.draft;}
 function placeDraggedPlayer(playerId,pos){
- const d=placingContext(); if(!d||!Number.isInteger(pos)||pos<0||pos>5)return false;
+ const d=placingContext(); if(!d||!Number.isInteger(pos)||pos< -1||pos>5)return false;
  if(!d.rosterIds.includes(playerId))return false;
  const roster=ui.modal==='nextset'?mcurrent()?.teamSnapshot.players:data.teams.find(t=>t.id===d.teamId)?.players;
  const player=roster?.find(p=>p.id===playerId);
- if(!player||player.position==='L')return false;
+ if(!player)return false;
+ if(pos===-1){if(player.position!=='L')return false;d.liberoId=playerId;ui.pickedPlayer=null;ui.missing=[];render();return true;}
+ if(player.position==='L')return false;
  const old=d.lineup.indexOf(playerId);if(old>=0)d.lineup[old]='';
  d.lineup[pos]=playerId;ui.pickedPlayer=null;ui.missing=[];render();return true;
 }
