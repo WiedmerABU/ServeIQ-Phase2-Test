@@ -170,6 +170,28 @@ body:before{content:"";position:fixed;inset:56px 0 0;pointer-events:none;backgro
 .match-card-actions>.btn{width:100%;min-width:0;min-height:48px;padding:10px 5px;overflow-wrap:anywhere}
 .ongoing-card h3{margin:0 0 4px}
 .ongoing-card>p.muted{margin:0 0 9px}
+
+/* Phase 2 targeted fix: fixed identical boxes at all six rotation positions,
+   name length must never influence the grid geometry (also for sets 2-5). */
+.live-lineup-court{grid-template-rows:repeat(2,minmax(0,1fr));grid-auto-flow:row;align-items:stretch}
+.live-lineup-position{width:100%;min-width:0;min-height:0;align-self:stretch;justify-content:center;overflow:hidden}
+.live-lineup-position .live-lineup-tile{box-sizing:border-box;flex:0 0 78px;height:78px;min-height:78px;max-height:78px;width:100%;max-width:100%;min-width:0;overflow:hidden;display:flex;justify-content:center;align-items:center;padding:3px 2px}
+.live-lineup-position .live-lineup-tile span{display:block;width:100%;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;overflow-wrap:normal;line-height:1.2;text-align:center;font-size:clamp(.58rem,2.5vw,.74rem)}
+.live-lineup-position .live-lineup-tile small{overflow:hidden;text-overflow:ellipsis;max-width:100%;white-space:nowrap}
+.live-lineup-position .live-lineup-tile strong{flex-shrink:0}
+.lineup-edit-panel .live-lineup-court{grid-template-rows:repeat(2,minmax(0,1fr))}
+.nextset-modal .live-lineup-court{grid-template-rows:repeat(2,minmax(0,1fr))}
+.nextset-modal .live-lineup-position .live-lineup-tile{height:62px;min-height:62px;max-height:62px;flex-basis:62px}
+@media(max-width:390px){.live-lineup-position .live-lineup-tile{height:68px;min-height:68px;max-height:68px;flex-basis:68px}.nextset-modal .live-lineup-position .live-lineup-tile{height:58px;min-height:58px;max-height:58px;flex-basis:58px}}
+/* Neutral landing zone, selected Libera stays pale pink; both tap and drag are preserved. */
+.libero-station{background:transparent;border:0;padding:0;width:min(49%,240px);gap:6px}
+.libero-drop{background:#e7ebef;border:2px dashed #9aa8b7;color:#42566b;border-radius:9px;min-height:64px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:5px}
+.libero-drop.occupied{background:#f8dce8;border:2px solid #d9aac1;color:#6d2847}
+.libero-drop.occupied>b{font-size:1.12rem}
+.libero-drop.occupied>small{font-size:.69rem;color:#6d2847}
+.libero-drop .libero-remove{font-size:.65rem;white-space:nowrap}
+.libero-station>small{font-size:.75rem;color:#4c5f72}
+.lineup-libero small{display:block;color:#62778a;font-size:.78rem;margin-top:3px}
 </style></head><body><div id="app"><main class="loading">ServeIQ 0.2 wird geladen …</main></div><script type="module">// model
 /** ServeIQ v0.1 – pure, deterministic volleyball rules and statistics. */
 const VERSION = 1;
@@ -743,9 +765,9 @@ function courtUi(d,t,isNext=false){
  const names={P:'Pass',M:'Mitte',A:'Aussen',D:'Diagonal',L:'Libero'};
  const slot=i=>{
    const p=t.players.find(x=>x.id===d.lineup[i]);
-   return `<button type="button" class="live-lineup-position volley-slot ${p?'filled':''}" data-action="${isNext?'next-position':'court-position'}" data-pos="${i}" data-drop="${i}" aria-label="Position ${i+1}${p?', '+esc(p.first)+' '+esc(p.last):', frei'}"><small>Position ${i+1}</small><span class="live-lineup-tile">${p?`<strong>${esc(p.number)}</strong><span>${esc(p.first)} ${esc(p.last)}</span><small>${esc(names[p.position]||'–')}</small>`:'<strong>＋</strong><span>Spielerin wählen</span>'}</span></button>`;
+   return `<button type="button" class="live-lineup-position volley-slot ${p?'filled':''}" data-action="${isNext?'next-position':'court-position'}" data-pos="${i}" data-drop="${i}" aria-label="Position ${i+1}${p?', '+esc(p.first)+' '+esc(p.last):', frei'}"><small>Position ${i+1}</small><span class="live-lineup-tile">${p?`<strong>${esc(p.number)}</strong><span>${esc(p.first)}</span><small>${esc(names[p.position]||'–')}</small>`:'<strong>＋</strong><span>Spielerin wählen</span>'}</span></button>`;
  };
- return `${lineupCourtShell(gridOrder.map(slot).join(''),'edit')}<div class="libero-station"><strong>Libera (separater Platz, keine Rotationsposition)</strong><button type="button" class="libero-drop ${d.liberoId?'occupied':''}" data-action="court-libero" data-drop="-1" aria-label="Libera auf separaten Platz setzen oder entfernen">${d.liberoId?(()=>{const p=t.players.find(x=>x.id===d.liberoId);return p?`<b>${esc(p.number)}</b> · ${esc(p.first)} · Libero <span>✕ entfernen</span>`:'Libera wählen';})():'＋ Rosa Libero-Kachel hier ablegen'}</button><small>Die Libera ist kein Rotationsplatz und serviert nicht.</small></div><h3>Spielerinnen auswählen / ziehen</h3>${rosterCards(t.players.filter(p=>d.rosterIds.includes(p.id)),[...d.lineup.filter(Boolean),d.liberoId].filter(Boolean),'court-player')}<p class="small muted">Kachel antippen und danach Feldposition bzw. Libera-Platz wählen – oder dorthin ziehen.</p>`;
+ return `${lineupCourtShell(gridOrder.map(slot).join(''),'edit')}<div class="libero-station"><button type="button" class="libero-drop ${d.liberoId?'occupied':''}" data-action="court-libero" data-drop="-1" aria-label="Libera auswählen oder entfernen">${d.liberoId?(()=>{const p=t.players.find(x=>x.id===d.liberoId);return p?`<b>${esc(p.number)}</b><span>${esc(p.first)}</span><small>Libero</small><span class="libero-remove">✕ entfernen</span>`:'+ Libera wählen';})():'+ Libera wählen'}</button><small>Die Libera serviert nicht</small></div><h3>Spielerinnen auswählen / ziehen</h3>${rosterCards(t.players.filter(p=>d.rosterIds.includes(p.id)),[...d.lineup.filter(Boolean),d.liberoId].filter(Boolean),'court-player')}<p class="small muted">Kachel antippen und danach Feldposition bzw. Libera-Platz wählen – oder dorthin ziehen.</p>`;
 }
 function lineupValidation(d){let missing=[];if(d.lineup.filter(Boolean).length!==6)missing.push('Sechs reguläre Spielerinnen aufstellen');if(new Set(d.lineup.filter(Boolean)).size!==d.lineup.filter(Boolean).length)missing.push('Spielerin doppelt aufgestellt');if(d.liberoId&&d.lineup.includes(d.liberoId))missing.push('Libera darf keine Rotationsposition besetzen');if(!d.lineup.filter(Boolean).every(id=>d.rosterIds.includes(id)))missing.push('Nur Matchkader-Spielerinnen einsetzen');if(!d.side)missing.push('Spielfeldseite wählen');if(!d.firstServe)missing.push('Ersten Service festlegen');return missing;}
 function newScreen(){
@@ -783,9 +805,9 @@ function currentLineupScreen(){
  const names={P:'Pass',M:'Mitte',A:'Aussen',D:'Diagonal',L:'Libero'};
  // slots are indexed by actual volleyball positions: 1..6, in order.
  const displayOrder=[3,2,1,4,5,0];
- const cell=i=>{const id=s.slots?.[i]?.playerId,p=m.teamSnapshot.players.find(x=>x.id===id);return `<div class="live-lineup-position"><small>Position ${i+1}</small><div class="live-lineup-tile">${p?`<strong>${esc(p.number)}</strong><span>${esc(p.first)} ${esc(p.last)}</span><small>${esc(names[p.position]||'–')}</small>`:'<span>–</span>'}</div></div>`;};
+ const cell=i=>{const id=s.slots?.[i]?.playerId,p=m.teamSnapshot.players.find(x=>x.id===id);return `<div class="live-lineup-position"><small>Position ${i+1}</small><div class="live-lineup-tile">${p?`<strong>${esc(p.number)}</strong><span>${esc(p.first)}</span><small>${esc(names[p.position]||'–')}</small>`:'<span>–</span>'}</div></div>`;};
  const libero=m.teamSnapshot.players.find(p=>p.id===s.liberoId);
- return `<button class="btn secondary lineup-back" data-action="lineup-current-back">← Zurück</button><section class="screen-head"><div><h1>Aktuelle Aufstellung</h1><p>Satz ${s.number} · ${esc(m.teamSnapshot.club)} ${s.home}:${s.away} ${esc(m.opponent)}</p></div></section>${lineupCourtShell(displayOrder.map(cell).join(''))}<div class="lineup-libero">Libero: ${libero?`${esc(libero.number)} · ${esc(libero.first)} ${esc(libero.last)}`:'keiner'}</div><p class="small muted">Ansicht zum aktuellen Spielstand, inklusive Rotationen und regulären Spielerwechseln. Keine Bearbeitung.</p><button class="btn secondary lineup-back" data-action="lineup-current-back">← Zurück zum Live-Game</button>`;
+ return `<button class="btn secondary lineup-back" data-action="lineup-current-back">← Zurück</button><section class="screen-head"><div><h1>Aktuelle Aufstellung</h1><p>Satz ${s.number} · ${esc(m.teamSnapshot.club)} ${s.home}:${s.away} ${esc(m.opponent)}</p></div></section>${lineupCourtShell(displayOrder.map(cell).join(''))}<div class="lineup-libero">Libero: ${libero?`${esc(libero.number)} · ${esc(libero.first)}`:'keine gewählt'}<small>Die Libera serviert nicht</small></div><p class="small muted">Ansicht zum aktuellen Spielstand, inklusive Rotationen und regulären Spielerwechseln. Keine Bearbeitung.</p><button class="btn secondary lineup-back" data-action="lineup-current-back">← Zurück zum Live-Game</button>`;
 }
 function endOfSet(m,st){const s=st.current;return `${back()}${s.winner==='home'?'<div class="confetti" aria-hidden="true">🎉 ✨ 🎊 ✨ 🎉</div>':''}${scoreBoard(m,st,s,false)}
  <div class="win-panel">🏆<h1>${st.finished?'Spiel beendet':`Satz ${s.number} beendet`}</h1><p>${s.winner==='home'?esc(m.teamSnapshot.club):esc(m.opponent)} gewinnt ${s.home}:${s.away}</p>
@@ -1013,7 +1035,7 @@ root.addEventListener('click',async e=>{
       if(!ids.includes(id)&&t.players.some(p=>ids.includes(p.id)&&Number(p.number)===Number(player.number)))throw Error(`Trikotnummer ${player.number} ist bereits im Matchkader vergeben.`);
       ui.draft.rosterIds=ids.includes(id)?ids.filter(x=>x!==id):[...ids,id];render();break;}
     case'court-player':ui.pickedPlayer=id;document.querySelectorAll('[data-action="court-player"]').forEach(x=>x.classList.toggle('picked',x.dataset.id===id));break;
-    case'court-position':{const pos=Number(b.dataset.pos),d=ui.draft;const x=ui.pickedPlayer;if(x){const p=data.teams.find(t=>t.id===d.teamId)?.players.find(p=>p.id===x);if(!p||p.position==='L')throw Error('Libera bitte auf den separaten rosa Libera-Platz ziehen.');const old=d.lineup.indexOf(x);if(old>=0)d.lineup[old]='';d.lineup[pos]=x;ui.pickedPlayer=null;}else{ui.pickerPos=pos;ui.modal='pick-player';}ui.missing=[];render();break;}
+    case'court-position':{const pos=Number(b.dataset.pos),d=ui.draft;const x=ui.pickedPlayer;if(x){const p=data.teams.find(t=>t.id===d.teamId)?.players.find(p=>p.id===x);if(!p||p.position==='L')throw Error('Libera bitte auf den separaten Libera-Platz ziehen.');const old=d.lineup.indexOf(x);if(old>=0)d.lineup[old]='';d.lineup[pos]=x;ui.pickedPlayer=null;}else{ui.pickerPos=pos;ui.modal='pick-player';}ui.missing=[];render();break;}
     case'court-libero':{const d=placingContext();if(!d)break;const id=ui.pickedPlayer;if(!id){d.liberoId='';ui.missing=[];render();break;}const roster=ui.modal==='nextset'?mcurrent()?.teamSnapshot.players:data.teams.find(t=>t.id===d.teamId)?.players;const player=roster?.find(p=>p.id===id);if(!player||player.position!=='L'||!d.rosterIds.includes(id))throw Error('Auf dem Libera-Platz ist nur eine ausgewählte Libera erlaubt.');d.liberoId=id;ui.pickedPlayer=null;ui.missing=[];render();break;}
     case'next-position':{
       const pos=Number(b.dataset.pos),d=ui.nextOptions;
