@@ -17,3 +17,9 @@ Alle Dateien im ZIP in das Stammverzeichnis des Repositories `ServeIQ-Phase2-Tes
 
 ## Testhinweise
 Vor Produktion alle Aktionen auf Smartphone und Browser prüfen: Entwurf fortsetzen, Libera setzen und entfernen, Aufstellungswechsel, Servicepunkte, Rotation und Archiv. JavaScript-Syntaxprüfung ist kein vollständiger Browser-Test.
+
+## Neue Änderung – Karten «Neues Spiel»
+- «Laufende Spiele»: Mannschaften und Datum, ohne Satz, Punkte, Satzstand und redundante Statusbeschriftung.
+- «Entwürfe»: Mannschaften und Datum, ohne redundante Labels oder Hinweistext.
+- Beide Bereiche: identisch grosse Buttons in zwei Spalten; Entwürfe mit «Entwurf fortsetzen» und «Löschen» inklusive Sicherheitsbestätigung.
+- Splash-Screen-Bild und übrige Funktionen sind unverändert aus der vorigen Testversion übernommen.

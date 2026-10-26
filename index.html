@@ -164,6 +164,12 @@ body:before{content:"";position:fixed;inset:56px 0 0;pointer-events:none;backgro
 .home-intro h2{margin:0 0 8px;color:#103e71}
 @media(min-width:600px){.roster-grid{grid-template-columns:repeat(6,minmax(0,1fr))!important}}
 @media(max-width:360px){.roster-grid .roster-tile .tile-first{font-size:.69rem!important}.roster-grid{gap:3px!important}}
+
+/* Phase 2: einheitliche Aktionsbuttons der Karten im Bildschirm Neues Spiel */
+.match-card-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.match-card-actions>.btn{width:100%;min-width:0;min-height:48px;padding:10px 5px;overflow-wrap:anywhere}
+.ongoing-card h3{margin:0 0 4px}
+.ongoing-card>p.muted{margin:0 0 9px}
 </style></head><body><div id="app"><main class="loading">ServeIQ 0.2 wird geladen …</main></div><script type="module">// model
 /** ServeIQ v0.1 – pure, deterministic volleyball rules and statistics. */
 const VERSION = 1;
@@ -679,14 +685,13 @@ function render(){const prevModal=root.querySelector('.nextset-modal');const pre
   root.innerHTML=shell(content);if(ui.modal==='nextset'){const nextModal=root.querySelector('.nextset-modal');if(nextModal)nextModal.scrollTop=previousModalScroll;}if(prevY&&ui.modal==='nextset')window.scrollTo(0,prevY); }
 function ongoingCards() {
   return activeMatches().map(m=>{
-    const st=replay(m),c=st.current;
-    return `<section class="panel ongoing-card"><div class="ongoing-top"><b>Laufendes Spiel</b><span class="game-indicator">● Gespeichert</span></div><h3>${esc(m.teamSnapshot.club)} – ${esc(m.opponent)}</h3><p class="muted small">Satz ${c?.number||1} · Spielstand ${c?`${c.home}:${c.away}`:'0:0'} · Sätze ${st.homeSets}:${st.awaySets}</p><div class="action-row"><button class="btn primary" data-action="open-live" data-id="${m.id}">Spiel öffnen</button><button class="btn danger-ghost" data-action="ongoing-delete" data-id="${m.id}">Löschen</button></div></section>`;
+    return `<section class="panel ongoing-card"><h3>${esc(m.teamSnapshot.club)} – ${esc(m.opponent)}</h3><p class="muted small">${esc(m.date||'')}</p><div class="action-row match-card-actions"><button class="btn primary" data-action="open-live" data-id="${m.id}">Spiel öffnen</button><button class="btn danger-ghost" data-action="ongoing-delete" data-id="${m.id}">Löschen</button></div></section>`;
   }).join('');
 }
 function draftCard() {
   if(!data.draft)return '';
   const team=data.teams.find(x=>x.id===data.draft.teamId);
-  return `<section class="panel"><b>Entwurf</b><h3>${esc(team?.club||'Team')} – ${esc(data.draft.opponent||'Gegner noch offen')}</h3><p class="muted small">Spielvorbereitung noch nicht abgeschlossen</p><button class="btn secondary wide" data-action="resume-draft">Entwurf fortsetzen</button></section>`;
+  return `<section class="panel ongoing-card"><h3>${esc(team?.club||'Team')} – ${esc(data.draft.opponent||'Gegner noch offen')}</h3><p class="muted small">${esc(data.draft.date||'')}</p><div class="action-row match-card-actions"><button class="btn primary" data-action="resume-draft">Entwurf fortsetzen</button><button class="btn danger-ghost" data-action="draft-delete">Löschen</button></div></section>`;
 }
 function teamsScreen(){
   if(ui.editingTeam)return teamEditor();
@@ -1035,6 +1040,7 @@ root.addEventListener('click',async e=>{
       break;}
     case'draft-discard':{if(await persistBeforeNavigation(()=>{data.draft=null;data.draftStep=0;},'Entwurf verworfen.')){ui.draft=null;ui.wizardStep=0;ui.modal='';ui.view='teams';ui.teamId=null;renderAtTop();}break;}
     case'draft-keep':ui.modal='';render();break;
+    case'draft-delete':confirmAction('Diesen Entwurf endgültig löschen?',()=>{data.draft=null;data.draftStep=0;commit();render();});break;
     case'ongoing-delete':confirmAction('Laufendes Spiel endgültig löschen?',()=>{data.matches=data.matches.filter(x=>x.id!==id);commit();render();});break;
     case'analysis-open':ui.analysisMode=b.dataset.mode;ui.analysisSubject='team';ui.analysisSet=0;renderAtTop();break;
     case'analysis-back':ui.analysisMode='';renderAtTop();break;
