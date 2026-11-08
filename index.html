@@ -277,6 +277,57 @@ html{scroll-behavior:smooth}body{background:#f2f5f9;color:var(--text)}
 .bottom-nav.nav-compact .nav-item{min-height:45px}
 @media(min-width:900px){.bottom-nav.nav-compact.is-collapsed{transform:translateY(calc(100% - 27px - env(safe-area-inset-bottom)))}}
 @media(prefers-reduced-motion:reduce){.bottom-nav.nav-compact{transition:none}}
+
+</style><style id="serveiq-blue-theme">
+/* ServeIQ Phase 2: unified brand-blue interface; presentation-only override */
+:root{--blue:#0868bb;--deep:#0b2d54;--pale:#bfe9ff;--border:#376c9d;--text:#f7fbff;color:#f7fbff;background:#0b2d54}
+html,body{background:#0b2d54;color:#f7fbff}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:url('./splash-screen.png') center center / cover no-repeat;opacity:.085;filter:grayscale(1) contrast(1.3);z-index:0}
+#app,.main{position:relative}
+.main{color:#f7fbff}
+.screen-head h1,.screen-head p,.main>h1,h1,h2,h3,.main p,.muted,.small,.small-note,.field-label{color:#f4faff}
+.panel,.archive-card,.item-card,.ongoing-card,.win-panel,.empty,.modal,.court-position{background:#123d6c;color:#f7fbff;border-color:#4476a5;box-shadow:0 5px 0 #061e3a,0 12px 21px #020f2622}
+.item-card small,.panel td small,.panel th,.archive-score small,.archive-card p,.roster-entry small,.metric-grid small,.court-position small,.small-note{color:#d5e9fa}
+.panel table td,.panel table th{border-color:#396998;color:#f4faff}
+.panel tr[data-action]:hover{background:#1b5284}
+.metric-grid>div,.notice.mild,.roster-tile:not(.libero),.number-choice:not(.selected),.chip:not(.selected){background:#195286;border-color:#4a85b8;color:#fff}
+.notice,.notice.mild,.notice.error{background:#184c7c;color:#f4fbff;border-color:#6697c2}
+.form-stack input,.form-stack select,.panel select,.court-list select,.libero-station select{background:#eff7ff;border:1px solid #9fbfda;color:#12385f}
+.form-stack label,.panel>label,.libero-station label{color:#f4fbff}
+/* All ordinary action buttons share the same flat, elevated, club-blue visual language. */
+.btn,.btn.primary,.btn.secondary,.btn.danger,.btn.danger-ghost,.danger-ghost,.backbutton,.v7-tool,.v7-lineup-btn,.v7-back,.textlink,.chip.selected,.number-choice.selected,.settings-trigger{background:#0868bb!important;color:#fff!important;border:1px solid #4094dc!important;border-radius:12px!important;box-shadow:0 4px 0 #043a72,0 9px 17px #02162c3d!important}
+.btn:hover:not(:disabled),.v7-tool:hover:not(:disabled){background:#1176c7!important}
+.btn:disabled,.v7-tool:disabled{opacity:.45}
+.v7-btn,.v7-green,.v7-red,.v7-choice .v7-btn,.v7-actions .v7-btn,.point-buttons button,.point-home,.point-away,.big-action.ace,.big-action.normal,.big-action.fault{background:#bfe9ff!important;color:#10446e!important;border:1px solid #86c9ed!important;box-shadow:inset 0 1px 1px #fff8,0 5px 0 #3984b1,0 10px 16px #031c3933!important}
+.v7-btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 #3984b1!important}
+.v7-board,.scoreboard{background:linear-gradient(155deg,#123d6b,#082345 82%)!important;border-color:#4a9bd1;color:#fff}
+.v7-team.is-serving{border-color:#a4ecff!important}
+.v7-service-label{color:#bfe9ff}
+.v7-decision{background:linear-gradient(160deg,#0e3661,#061f3e)!important}
+.current-player,.roster-tile.chosen{background:#145386!important;color:#fff!important;border-color:#78b4e0!important}
+.roster-tile.chosen span,.roster-tile.chosen b{color:#fff}
+.roster-tile.libero,.roster-tile.libera{background:#ffe2eb!important;color:#713b57!important}
+.tag{background:#1b5990;color:#fff}
+.bottom-nav{background:#0a3159;border-top:1px solid #4475a3;box-shadow:0 -4px 0 #072445,0 -10px 22px #031a33}
+.nav-item{background:#0a3159;color:#d7eeff}
+.nav-item.active{background:#176bb0;color:#fff}
+.bottom-nav.nav-compact .nav-handle{background:#0a3159}
+.bottom-nav.nav-compact .nav-handle span{background:#afdfff}
+.toast{background:#0868bb}
+/* The original splash is left untouched, including its assets, typography and button. */
+body:has(.splash){background:#0b2850}
+body:has(.splash):before{display:none}
+body:has(.splash) .splash .btn{background:#0874d5!important;color:#fff!important;border:0!important;box-shadow:none!important}
+@media(prefers-reduced-motion:reduce){.v7-team.is-serving,.v7-service-label{animation:none}}
+</style><style id="serveiq-audio-ui">
+/* Unified blue-theme audio controls: existing elevated-flat design retained. */
+.siq-audio-settings{border:1px solid #4e84ad;border-radius:14px;padding:15px;background:#154771;box-shadow:0 4px 0 #07294d}
+.siq-audio-settings h2{margin:0 0 12px;color:#f5fbff}
+.siq-sound-toggle{display:flex!important;flex-direction:row!important;align-items:center;gap:10px;color:#f5fbff}
+.siq-sound-toggle input{width:21px!important;height:21px!important;min-height:0;accent-color:#50c9f1}
+.siq-sound-volume input{accent-color:#6ac9f0;min-height:30px!important;padding:0!important;border:0!important;background:transparent!important}
+.siq-audio-tests{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.siq-audio-tests .btn{min-width:0;font-size:.84rem;overflow-wrap:anywhere}
 </style></head><body><div id="app"><main class="loading">ServeIQ 0.2 wird geladen …</main></div><script type="module">// model
 /** ServeIQ v0.1 – pure, deterministic volleyball rules and statistics. */
 const VERSION = 1;
@@ -625,6 +676,26 @@ async function save(x){
 
 
 
+
+// ServeIQ: user-approved acoustic feedback. Independent of game state and backups.
+const SIQ_AUDIO_ENABLED_KEY='serveiq_audio_enabled_v1';
+const SIQ_AUDIO_VOLUME_KEY='serveiq_audio_volume_v1';
+let siqAudioEnabled=true,siqAudioVolume=55;
+try{siqAudioEnabled=localStorage.getItem(SIQ_AUDIO_ENABLED_KEY)!=='false';const x=localStorage.getItem(SIQ_AUDIO_VOLUME_KEY);if(x!==null&&Number.isFinite(Number(x)))siqAudioVolume=Math.max(0,Math.min(100,Number(x)));}catch{}
+const siqSounds={point:new Audio('./point-double.wav'),normal:new Audio('./service-ascending.wav')};
+Object.values(siqSounds).forEach(a=>{a.preload='auto';a.volume=siqAudioVolume/100;});
+function siqPlay(kind){
+ if(!siqAudioEnabled||siqAudioVolume<=0)return;
+ const current=siqSounds[kind];if(!current)return;
+ try{Object.values(siqSounds).forEach(a=>{a.pause();a.currentTime=0;});current.volume=siqAudioVolume/100;
+ const result=current.play();if(result&&typeof result.catch==='function')result.catch(e=>console.info('ServeIQ: Audiowiedergabe vom Browser blockiert',e));}
+ catch(e){console.info('ServeIQ: Audio nicht verfügbar',e);}
+}
+function siqSetSound(enabled){siqAudioEnabled=!!enabled;try{localStorage.setItem(SIQ_AUDIO_ENABLED_KEY,String(siqAudioEnabled));}catch{}
+ if(!siqAudioEnabled)Object.values(siqSounds).forEach(a=>{a.pause();a.currentTime=0;});}
+function siqSetVolume(volume){siqAudioVolume=Math.max(0,Math.min(100,Number(volume)||0));try{localStorage.setItem(SIQ_AUDIO_VOLUME_KEY,String(siqAudioVolume));}catch{}
+ Object.values(siqSounds).forEach(a=>{a.volume=siqAudioVolume/100;});}
+
 const root=document.getElementById('app');
 let data=newAppData();
 const ui={showSplash:true,view:'teams',teamId:null,sortMode:'number',editingTeam:null,playerId:null,matchId:null,statsId:null,statsReturn:'archive',statsSet:0,statsPlayer:null,
@@ -799,7 +870,7 @@ function lineupHuman(set,m){return set.slots.map((s,i)=>`<div class="roster-entr
 function header(title='',subtitle=''){return `<header class="topbar"><button class="brand brand-button" data-action="home" aria-label="Zum Home-Screen"><img class="brand-club" src="./club-logo.png" alt="VBC Interlaken"><img class="brand-serveiq" src="./serveiq-logo.png" alt="ServeIQ"></button><button class="settings-trigger" data-action="settings" title="Einstellungen">⚙</button></header>${subtitle?`<p class="muted header-sub">${esc(subtitle)}</p>`:''}`;}
 const back=(action='home',text='Zurück')=>`<button class="textlink backbutton" data-action="${action}">← ${text}</button>`;
 function homeScreen(){return `<div class="home-view"><div class="home-crest">🏐</div><h1>Serve<span class="iq-color">IQ</span></h1><p>Volleyball – Service – Score Tracker</p><small>Funktionsvorschau 0.2 · 6:6 · GitHub-Testversion</small></div>`;}
-function settingsScreen(){return `${back()}<h1>Einstellungen</h1><div class="panel form-stack"><button class="btn secondary" data-action="json-export">⇩ Datensicherung erstellen (JSON)</button><button class="btn secondary" data-action="json-import">⇧ Datensicherung importieren (JSON)</button><p class="small muted">Die Daten bleiben lokal auf diesem Gerät. Für die Übertragung auf andere Geräte eine JSON-Sicherung exportieren.</p><small>ServeIQ 0.2 · GitHub-Testversion</small></div>`;}
+function settingsScreen(){return `${back()}<h1>Einstellungen</h1><div class="panel form-stack"><div class="siq-audio-settings"><h2>Akustische Rückmeldung</h2><label class="siq-sound-toggle"><input type="checkbox" data-action="sound-toggle" ${siqAudioEnabled?'checked':''}> Töne bei Service und Punktvergabe</label><label class="siq-sound-volume">Lautstärke <input type="range" min="0" max="100" step="5" value="${siqAudioVolume}" data-action="sound-volume"></label><div class="siq-audio-tests"><button class="btn secondary" data-action="sound-preview" data-kind="normal">▶ Normaler Service</button><button class="btn secondary" data-action="sound-preview" data-kind="point">▶ Punkt-Doppelton</button></div><p class="small muted">Normaler Service: kurzer tief-mittlerer Ton, noch kein Punkt. Punktgewinn oder Servicefehler: Doppelton.</p></div><button class="btn secondary" data-action="json-export">⇩ Datensicherung erstellen (JSON)</button><button class="btn secondary" data-action="json-import">⇧ Datensicherung importieren (JSON)</button><p class="small muted">Die Daten bleiben lokal auf diesem Gerät. Für die Übertragung auf andere Geräte eine JSON-Sicherung exportieren.</p><small>ServeIQ 0.2 · GitHub-Testversion</small></div>`;}
 function shell(content){return `${header()}<main class="main">${content}</main><nav class="bottom-nav ${compactGameNavigation()?'nav-compact':''} ${compactGameNavigation()&&!ui.menuOpen?'is-collapsed':''}" aria-label="Hauptnavigation"><button type="button" class="nav-handle" data-action="nav-handle" aria-label="Navigation ein- oder ausblenden" aria-expanded="${ui.menuOpen}"><span></span></button><button data-action="nav" data-view="teams" class="nav-item ${ui.view==='teams'?'active':''}">${icon('♙')}<span>Teams</span></button><button data-action="nav" data-view="new" class="nav-item ${ui.view==='new'?'active':''}">${icon('＋')}<span>Neues Spiel</span></button><button data-action="nav" data-view="live" class="nav-item ${ui.view==='live'?'active':''}">${icon('◉')}<span>Live-Game</span></button><button data-action="nav" data-view="archive" class="nav-item ${ui.view==='archive'?'active':''}">${icon('▤')}<span>Archiv</span></button></nav>${ui.toast?`<div class="toast" role="status">${esc(ui.toast)}</div>`:''}${modalHtml()}`;}
 function renderAtTop(){render();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant'}));}
 function render(){const prevModal=root.querySelector('.nextset-modal');const previousModalScroll=prevModal?.scrollTop||0;const prevY=window.scrollY;if(ui.showSplash){root.innerHTML=`<main class="splash"><div class="splash-ball">🏐</div><div class="wordmark">Serve<span>IQ</span></div><p>Volleyball – Service – Score Tracker</p><button class="btn primary huge" data-action="intro">START</button><small>Funktionsprototyp · Version 0.2</small></main>`;return;}
@@ -1108,7 +1179,7 @@ function captureDraftForm(){
  }
 }
 function confirmAction(msg,fn){ui.modal='confirm';ui.alertText=msg;ui.confirmFn=fn;render();}
-function afterEvent(event){const m=mcurrent();try{const x=pushEvent(m,event);data.matches[data.matches.findIndex(k=>k.id===m.id)]=x;commit();render();return true;}catch(err){showAlert(err.message);return false;}}
+function afterEvent(event){const m=mcurrent();try{const x=pushEvent(m,event);data.matches[data.matches.findIndex(k=>k.id===m.id)]=x;commit();render();if(event.type==='NORMAL')siqPlay('normal');else if(event.type==='RALLY')siqPlay('point');return true;}catch(err){showAlert(err.message);return false;}}
 function navigate(view){ui.view=view;ui.menuOpen=view!=='live'&&view!=='current-lineup';armNav();ui.modal='';ui.teamId=null;ui.editingTeam=null;if(view!=='archive')ui.statsId=null;
   if(view==='live'){const chosen=data.matches.find(x=>x.id===ui.matchId&&!x.archivedEarly&&!replay(x).finished);const a=chosen||activeMatch();if(a)ui.matchId=a.id;}
   commit();renderAtTop();}
@@ -1120,6 +1191,7 @@ root.addEventListener('click',async e=>{
     case'intro':ui.showSplash=false;data.introSeen=true;ui.view='teams';ui.menuOpen=true;armNav();commit();render();break;
     case'home':if(ui.editingTeam){confirmAction('Teamerstellung verlassen? Nicht gespeicherte Eingaben werden verworfen.',()=>{ui.editingTeam=false;ui.teamForm=null;navigate('teams');});break;}if(ui.draft){captureDraftForm();ui.modal='draft-exit';render();break;}navigate('teams');break;
     case'settings':ui.view='settings';ui.modal='';render();break;
+    case'sound-preview':siqPlay(b.dataset.kind);break;
     case'nav':if(ui.editingTeam){const target=b.dataset.view;confirmAction('Teamerstellung verlassen? Nicht gespeicherte Eingaben werden verworfen.',()=>{ui.editingTeam=false;ui.teamForm=null;navigate(target);});break;}if(ui.draft){captureDraftForm();ui.modal='draft-exit';render();break;}navigate(b.dataset.view);break;
     case'nav-handle':setGameNav(!ui.menuOpen);break;
     case'new-team':ui.teamId=null;ui.editingTeam=true;ui.teamForm={club:'VBC Interlaken',category:'Damen',league:'4. Liga',season:seasonOptions()[0],players:[]};render();break;
@@ -1238,9 +1310,11 @@ root.addEventListener('click',async e=>{
     default:break;
   }}catch(err){showAlert(err.message||String(err));}
 });
-root.addEventListener('input',e=>{if(e.target.closest('[data-form="player"]')&&['first','last','number'].includes(e.target.name)){ui.playerDraft={...(ui.playerDraft||{}),[e.target.name]:e.target.value};if(e.target.name==='number'){ui.numberChoice=Number(e.target.value)||null;document.querySelectorAll('.number-choice').forEach(x=>x.classList.toggle('selected',Number(x.dataset.number)===ui.numberChoice));}}});
+root.addEventListener('input',e=>{if(e.target.dataset.action==='sound-volume'){siqSetVolume(e.target.value);return;}if(e.target.closest('[data-form="player"]')&&['first','last','number'].includes(e.target.name)){ui.playerDraft={...(ui.playerDraft||{}),[e.target.name]:e.target.value};if(e.target.name==='number'){ui.numberChoice=Number(e.target.value)||null;document.querySelectorAll('.number-choice').forEach(x=>x.classList.toggle('selected',Number(x.dataset.number)===ui.numberChoice));}}});
 root.addEventListener('change',e=>{
   const t=e.target,action=t.dataset.action;
+  if(action==='sound-toggle'){siqSetSound(t.checked);return;}
+  if(action==='sound-volume'){siqSetVolume(t.value);return;}
   if(t.closest('[data-form="player"]')&&t.name==='position')ui.playerDraft={...(ui.playerDraft||{}),position:t.value};
   if(action==='regular-out'){ui.regularOutId=t.value;ui.regularError='';render();return;}
   if(action==='analysis-subject'){ui.analysisSubject=t.value;render();}
