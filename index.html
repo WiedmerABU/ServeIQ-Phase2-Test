@@ -783,9 +783,9 @@ async function saveTeamFromFields(){
     }
     if(!done)throw Error('Der Browser blockiert die lokale Speicherung. Öffne die Datei in einem regulären Browserfenster (nicht im privaten Modus) oder verwende später GitHub Pages.');
     ui.teamId=team.id;ui.teamForm=null;ui.editingTeam=false;ui.view='teams';
-    ui.toast='Team «'+club+'» gespeichert. Kader erfassen.';
+    ui.toast='✓ Gespeichert';
     renderAtTop();
-    setTimeout(()=>{if(ui.toast.startsWith('Team «')){ui.toast='';render();}},4000);
+    setTimeout(()=>{if(ui.toast==='✓ Gespeichert'){ui.toast='';render();}},2000);
   }catch(err){
     data=before;
     if(button){button.disabled=false;button.textContent='Team speichern';}
@@ -831,9 +831,9 @@ async function savePlayerFromFields(){
     if(!stored){try{localStorage.setItem('serveiq_v02_preview_emergency',JSON.stringify(snap));stored=true;}catch{}}
     if(!stored)throw Error('Der Browser erlaubt keine lokale Speicherung. Bitte öffne die HTML-Datei in Chrome oder Edge in einem normalen Fenster.');
     ui.modal='';ui.playerId=null;ui.playerDraft=null;ui.playerSaveError='';ui.numberChoice=null;ui.playerNumberPage=0;
-    ui.toast='Spielerin «'+first+' '+last+'» gespeichert.';
+    ui.toast='✓ Gespeichert';
     renderAtTop();
-    setTimeout(()=>{if(ui.toast.startsWith('Spielerin «')){ui.toast='';render();}},4000);
+    setTimeout(()=>{if(ui.toast==='✓ Gespeichert'){ui.toast='';render();}},2000);
   }catch(err){
     data=before;
     ui.playerSaveError='Spielerin konnte nicht gespeichert werden: '+(err.message||String(err));
@@ -904,7 +904,7 @@ function teamEditor(){const t=ui.teamForm||{};return `${back('team-cancel')}<div
     <label>Liga / Altersklasse<select name="league" id="league-select">${selectOpt(categoryLeagues(t.category||'Damen'),t.league||categoryLeagues(t.category||'Damen')[0])}</select></label>
     <label>Gruppe<select name="group">${selectOpt(['','A','B','C','D'],t.group||'')}</select></label>
     <div class="action-row"><button class="btn primary" type="button" data-action="team-save">Team speichern</button><button class="btn secondary" type="button" data-action="team-cancel">Abbrechen</button></div>
-    <p class="small muted">Nach dem Speichern öffnet sich direkt der Teamkader. Von dort gelangst du mit «Speichern» zur Startseite «Teams».</p>
+    <p class="small muted">Nach dem Speichern öffnet sich direkt der Teamkader. Spielerinnen werden einzeln und automatisch im Teamkader gespeichert.</p>
   </form>`;}
 function categoryLeagues(c){return c==='Damen'?['2. Liga','3. Liga','4. Liga','5. Liga']:c==='Herren'?['2. Liga','3. Liga','4. Liga']:c==='Juniorinnen'?['U23','U20','U18','U16','U14','Kids Volley']:['Mixed'];}
 function teamDetails(t){const rows=playersFor(t);if(ui.sortMode==='position'){const order=['P','M','A','D','L',''];rows.sort((a,b)=>order.indexOf(a.position||'')-order.indexOf(b.position||'') || a.number-b.number);}return `<section class="screen-head"><div><button class="textlink" data-action="team-back">‹ Alle Teams</button><h1>${esc(t.club)}</h1><p>${esc(teamName(t))}</p></div></section>
@@ -912,7 +912,7 @@ function teamDetails(t){const rows=playersFor(t);if(ui.sortMode==='position'){co
     <div class="screen-head tighter"><h2>Kader</h2></div><div class="roster-toolbar"><button class="btn primary" data-action="player-new">＋ Spielerin</button><button class="btn secondary" data-action="roster-sort">Sortierung: ${ui.sortMode==='number'?'Nr.':'Position'}</button></div>
     ${rows.length?rows.map(p=>`<button class="item-card" data-action="player-edit" data-id="${p.id}"><span class="circle-number">${p.number}</span><span><strong>${esc(p.first)} ${esc(p.last)}</strong><small>${esc(({P:'Pass',M:'Mitte',A:'Aussen',D:'Diagonal',L:'Libera'})[p.position]||'Position offen')}</small></span>${icon('›')}</button>`).join(''):'<div class="empty">Noch keine Spielerinnen im Kader.</div>'}
     <p class="small muted">Spielhistorie und Statistiken behalten die damaligen Spielerinnendaten auch nach Änderungen im Team.</p>
-    <button class="btn primary huge wide roster-finish" data-action="roster-save">Speichern</button>`;}
+    <p class="small muted">Änderungen am Kader werden direkt beim Speichern einer Spielerin übernommen.</p>`;}
 function playerModal(){const t=data.teams.find(x=>x.id===ui.teamId),p=t?.players.find(x=>x.id===ui.playerId);if(!t)return '';
   const base=ui.playerNumberPage||0,low=base*20+1,high=Math.min(99,low+19);
   return `<div class="modal-backdrop" data-action="modal-backdrop"><section class="modal" role="dialog" aria-modal="true"><h2>${p?'Spielerin bearbeiten':'Spielerin hinzufügen'}</h2>
@@ -985,7 +985,7 @@ function liveScreen(){let m=mcurrent();if(!m||m.archivedEarly)m=activeMatch();
  const g=`<button class="v7-btn v7-red" data-action="rally" data-kind="opponent" data-winner="away">Punkt<br>${esc(m.opponent)}</button>`;
  actions=`<div class="v7-actions v7-actions-opponent">${own?h+g:g+h}</div>`;
  }
- return `<div class="v7-live">${back()}<h1>Live-Game</h1>${v7ScoreBoard(m,st,s)}${s.sideSwitchJustHappened?'<div class="notice">Seitenwechsel im fünften Satz automatisch erfasst.</div>':''}${actions}<div class="v7-tools" role="group" aria-label="Spielaktionen"><button class="v7-tool" data-action="point-undo" ${canUndoPoint(m)?'':'disabled'} title="Letzten Punkt zurücknehmen">↶<small>Punkt zurück</small></button><button class="v7-tool" data-action="change-open">⇄<small>Wechsel</small></button><button class="v7-tool" data-action="stats-open" data-id="${m.id}">▥<small>Statistik</small></button><button class="v7-tool" data-action="point-redo" ${canRedoPoint(m)?'':'disabled'} title="Rücknahme wiederherstellen">↷<small>Punkt vor</small></button></div><button class="v7-lineup-btn" data-action="lineup-current-open">▦ Aktuelle Aufstellung</button><div class="v7-secondary"><button class="textlink" data-action="side-toggle">←→ Seite korrigieren</button><button class="textlink danger" data-action="stop-open">Spiel abbrechen ···</button></div></div>`;
+ return `<div class="v7-live">${back()}<h1>Live-Game</h1>${v7ScoreBoard(m,st,s)}${s.sideSwitchJustHappened?'<div class="notice">Seitenwechsel im fünften Satz automatisch erfasst.</div>':''}${actions}<div class="v7-tools" role="group" aria-label="Spielaktionen"><button class="v7-tool" data-action="point-undo" ${canUndoPoint(m)?'':'disabled'} title="Letzten Punkt zurücknehmen">↶<small>Punkt zurück</small></button><button class="v7-tool" data-action="change-open">⇄<small>Wechsel</small></button><button class="v7-tool" data-action="stats-open" data-id="${m.id}">▥<small>Statistik</small></button><button class="v7-tool" data-action="point-redo" ${canRedoPoint(m)?'':'disabled'} title="Rücknahme wiederherstellen">↷<small>Punkt vor</small></button></div><button class="v7-lineup-btn" data-action="lineup-current-open">▦ Aktuelle Aufstellung</button></div>`;
 }
 function currentLineupScreen(){
  const m=mcurrent();if(!m)return `<h1>Aktuelle Aufstellung</h1><p>Kein laufendes Spiel.</p><button class="btn secondary" data-action="lineup-current-back">← Zurück</button>`;
@@ -1052,7 +1052,6 @@ function modalHtml(){if(!ui.modal)return '';
 
   if(ui.modal==='alert'||ui.modal==='confirm')return `<div class="modal-backdrop"><div class="modal" role="dialog" aria-modal="true"><h2>${ui.modal==='confirm'?'Bitte bestätigen':'Hinweis'}</h2><p>${esc(ui.alertText||'')}</p><div class="action-row">${ui.modal==='confirm'?`<button class="btn danger" data-action="confirm-yes">Ja, ausführen</button><button class="btn secondary" data-action="modal-close">Abbrechen</button>`:`<button class="btn primary" data-action="modal-close">OK</button>`}</div></div></div>`;
   const m=mcurrent(),s=m&&replay(m).current;
-  if(ui.modal==='stop')return `<div class="modal-backdrop"><div class="modal"><h2>Spiel abbrechen</h2><p>Was soll mit dem Spiel passieren?</p><div class="form-stack"><button class="btn primary" data-action="stop-archive">Im Archiv speichern («Nicht abgeschlossen»)</button><button class="btn danger" data-action="stop-delete">Endgültig löschen</button><button class="btn secondary" data-action="modal-close">Zurück zum Spiel</button></div></div></div>`;
   if(ui.modal==='change'&&s){return `<div class="modal-backdrop"><div class="modal"><h2>Spielerwechsel</h2><p>Reguläre Wechsel: ${s.regularSubs}/6</p><button class="btn primary wide" data-action="change-type" data-type="regular">Normaler Spielerwechsel</button><button class="btn secondary wide" data-action="modal-close">Schliessen</button></div></div>`;}
   if(ui.modal==='regular'&&s){
     // ALL off-court match-roster players are visible; rule-ineligible choices are labelled and disabled.
@@ -1083,7 +1082,7 @@ function modalHtml(){if(!ui.modal)return '';
     <label>Einwechseln<select name="inId" ${valid.length?'':'disabled'}>${bench.map(id=>{const reason=eligible(id);return `<option value="${id}" ${reason?'disabled':''}>${esc(who(m,id))}${reason?' – '+esc(reason):''}</option>`;}).join('')}</select></label>${bench.length?'':'<p class="notice mild">Keine Ersatzspielerin im Matchkader ausserhalb des Feldes vorhanden.</p>'}${!valid.length&&bench.length?'<p class="notice mild">Für diese Spielerin ist aktuell kein regelkonformer Wechsel möglich. Bitte eine andere Spielerin bei «Auswechseln» wählen.</p>':''}
     ${ui.regularError?`<div class="notice error" role="alert">${esc(ui.regularError)}</div>`:''}<button class="btn primary" type="button" data-action="regular-confirm" ${valid.length&&s.regularSubs<6?'':'disabled'}>${ui.regularBusy?'Speichere Wechsel …':'Wechsel bestätigen'}</button><button class="btn secondary" type="button" data-action="modal-close">Abbrechen</button></form></div></div>`;}
   if(ui.modal==='nextset'&&s){const n=s.number+1,prev=st=>st;const o=ui.nextOptions||{lineup:Array(6).fill(''),rosterIds:m.rosterIds,liberoId:s.liberoId,side:n<=4?(s.side==='left'?'right':'left'):'',firstServe:n<=4?opposite(s.firstServe):''};ui.nextOptions=o;const t=m.teamSnapshot;
-   return `<div class="modal-backdrop"><div class="modal nextset-modal"><h2>Startaufstellung – ${n}. Satz</h2><p class="small muted">Stelle die sechs Spielerinnen für diesen Satz neu auf.</p>${courtUi(o,t,true)}${n===5?`<div class="form-stack"><strong>Spielfeldseite ${esc(t.club)}</strong><div class="seg"><button class="btn ${o.side==='left'?'primary':'secondary'}" data-action="next-side" data-val="left">← Links</button><button class="btn ${o.side==='right'?'primary':'secondary'}" data-action="next-side" data-val="right">Rechts →</button></div><strong>Erster Service</strong><div class="seg"><button class="btn ${o.firstServe==='home'?'primary':'secondary'}" data-action="next-serve" data-val="home">${esc(t.club)}</button><button class="btn ${o.firstServe==='away'?'primary':'secondary'}" data-action="next-serve" data-val="away">${esc(m.opponent)}</button></div></div>`:`<p class="notice mild">Seite und erster Service sind für Satz ${n} automatisch festgelegt.</p>`}${ui.missing?.length?`<div class="notice error">${ui.missing.map(esc).join(' · ')}</div>`:''}<button class="btn primary huge wide" data-action="next-confirm">Satz ${n} starten</button><button class="btn secondary wide" data-action="modal-close">Zurück</button></div></div>`;}
+   return `<div class="modal-backdrop"><div class="modal nextset-modal"><h2>Startaufstellung – ${n}. Satz</h2><p class="small muted">Stelle die sechs Spielerinnen für diesen Satz neu auf.</p>${courtUi(o,t,true)}${n===5?`<div class="form-stack"><strong>Spielfeldseite ${esc(t.club)}</strong><div class="seg"><button class="btn ${o.side==='left'?'primary':'secondary'}" data-action="next-side" data-val="left">← Links</button><button class="btn ${o.side==='right'?'primary':'secondary'}" data-action="next-side" data-val="right">Rechts →</button></div><strong>Erster Service</strong><div class="seg"><button class="btn ${o.firstServe==='home'?'primary':'secondary'}" data-action="next-serve" data-val="home">${esc(t.club)}</button><button class="btn ${o.firstServe==='away'?'primary':'secondary'}" data-action="next-serve" data-val="away">${esc(m.opponent)}</button></div></div>`:` `}${ui.missing?.length?`<div class="notice error">${ui.missing.map(esc).join(' · ')}</div>`:''}<button class="btn primary huge wide" data-action="next-confirm">Satz ${n} starten</button><button class="btn secondary wide" data-action="modal-close">Zurück</button></div></div>`;}
   if(ui.modal==='info')return `<div class="modal-backdrop"><div class="modal"><h2>ⓘ Erklärung</h2><p>${esc(infoText[ui.info]||'')}</p><button class="btn primary" data-action="modal-close">Schliessen</button></div></div>`;
   return '';
 }
@@ -1201,7 +1200,6 @@ root.addEventListener('click',async e=>{
     case'team-save':await saveTeamFromFields();break;
     case'player-save':await savePlayerFromFields();break;
     case'match-basic-save':await saveMatchBasicsAndNext();break;
-    case'roster-save':{if(await persistBeforeNavigation(()=>{},'Team und Saisonkader gespeichert.')){ui.teamId=null;ui.view='teams';ui.modal='';renderAtTop();}break;}
     case'team-cancel':confirmAction(ui.teamForm?.id?'Änderungen verwerfen und zu Teams zurückkehren?':'Teamerstellung abbrechen? Deine Eingaben werden nicht gespeichert.',()=>{ui.editingTeam=false;ui.teamForm=null;ui.teamId=null;ui.view='teams';renderAtTop();});break;
     case'team-edit':ui.editingTeam=true;ui.teamForm=structuredClone(data.teams.find(t=>t.id===id));render();break;
     case'team-delete':confirmAction('Team wirklich löschen? Archivierte Spiele bleiben erhalten.',()=>{data.teams=data.teams.filter(t=>t.id!==id);if(data.draft?.teamId===id){data.draft=null;data.draftStep=0;}if(ui.draft?.teamId===id)ui.draft=null;ui.teamId=null;commit();render();});break;
@@ -1287,13 +1285,9 @@ root.addEventListener('click',async e=>{
     case'point-redo':{const m=mcurrent();if(!m||!canRedoPoint(m))break;const restored=redoPoint(m);data.matches[data.matches.findIndex(x=>x.id===m.id)]=restored;commit();render();break;}
     case'undo':{const m=mcurrent();if(!m)return;data.matches[data.matches.findIndex(x=>x.id===m.id)]=undo(m);commit();render();break;}
     case'redo':{const m=mcurrent();if(!m)return;data.matches[data.matches.findIndex(x=>x.id===m.id)]=redo(m);commit();render();break;}
-    case'side-toggle':afterEvent({type:'SIDE'});break;
     case'change-open':ui.modal='change';render();break;
     case'change-type':ui.modal=b.dataset.type==='regular'?'regular':'libero';ui.regularOutId=null;ui.regularError='';render();break;
     case'regular-confirm':await saveRegularSubstitution();break;
-    case'stop-open':ui.modal='stop';render();break;
-    case'stop-archive':{const m=mcurrent();m.archivedEarly=true;ui.modal='';ui.view='archive';commit();render();break;}
-    case'stop-delete':confirmAction('Das gesamte Spiel unwiderruflich löschen?',()=>{data.matches=data.matches.filter(x=>x.id!==ui.matchId);ui.modal='';ui.view='archive';commit();render();});break;
     case'prepare-set':ui.nextOptions=null;ui.pickedPlayer=null;ui.missing=[];ui.modal='nextset';render();break;
     case'stats-open':ui.analysisMode='';ui.statsReturn=ui.view;ui.statsId=id;ui.statsSet=0;ui.statsPlayer=null;ui.modal='';ui.view='archive';if(ui.statsReturn==='live')ui.menuOpen=false;renderAtTop();break;
     case'stats-close':ui.analysisMode='';ui.statsId=null;ui.view=ui.statsReturn==='live'?'live':'archive';ui.menuOpen=ui.view!=='live';renderAtTop();break;
