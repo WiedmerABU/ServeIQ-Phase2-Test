@@ -278,6 +278,37 @@ html{scroll-behavior:smooth}body{background:#f2f5f9;color:var(--text)}
 @media(min-width:900px){.bottom-nav.nav-compact.is-collapsed{transform:translateY(calc(100% - 27px - env(safe-area-inset-bottom)))}}
 @media(prefers-reduced-motion:reduce){.bottom-nav.nav-compact{transition:none}}
 
+
+/* ServeIQ Phase 2: deliberate navigation, 3-second auto-hide only in Live-Game. */
+.bottom-nav.nav-compact .nav-handle{cursor:pointer;touch-action:pan-y}
+.bottom-nav.nav-compact .nav-item{transition:background-color .12s ease}
+/* Stable hit targets for touch pen and mouse; no movement or scaling on hover, click or focus. */
+.v7-actions .v7-btn,.v7-choice .v7-btn{
+  transform:none!important;
+  transition:background-color .12s ease,filter .12s ease!important;
+  min-width:0;
+}
+.v7-actions .v7-btn:hover,.v7-choice .v7-btn:hover{filter:brightness(1.035)}
+.v7-actions .v7-btn:active,.v7-choice .v7-btn:active{
+  transform:none!important;
+  filter:brightness(.96);
+}
+.v7-actions-opponent .v7-btn{
+  min-height:clamp(100px,19vh,145px);
+  padding:15px 8px;
+  font-size:clamp(1.04rem,3.9vw,1.45rem);
+}
+/* Never crop the unmodified original VBC Interlaken logo on any screen width. */
+.topbar .brand-button{display:flex;align-items:center;min-width:0;max-width:calc(100% - 54px);gap:clamp(3px,1.3vw,10px);overflow:visible}
+.topbar .brand-club{display:block;object-fit:contain!important;object-position:center;width:clamp(69px,21vw,138px);height:clamp(43px,7vw,55px);max-width:100%;flex-shrink:1}
+.topbar .brand-serveiq{display:block;object-fit:contain!important;min-width:0;flex-shrink:1;max-width:calc(100% - 78px)}
+@media(max-width:430px){
+ .topbar .brand-club{width:clamp(69px,25vw,91px);height:49px}
+ .topbar .brand-serveiq{width:clamp(116px,42vw,169px);height:46px}
+}
+@media(prefers-reduced-motion:reduce){
+ .bottom-nav.nav-compact,.v7-actions .v7-btn,.v7-choice .v7-btn{transition:none!important}
+}
 </style><style id="serveiq-blue-theme">
 /* ServeIQ Phase 2: unified brand-blue interface; presentation-only override */
 :root{--blue:#0868bb;--deep:#0b2d54;--pale:#bfe9ff;--border:#376c9d;--text:#f7fbff;color:#f7fbff;background:#0b2d54}
@@ -710,23 +741,54 @@ const rawpct=x=>x===null?'–':`${x.toFixed(1).replace('.',',')} %`;
 const toast=(msg)=>{ui.toast=msg;render();setTimeout(()=>{if(ui.toast===msg){ui.toast='';render();}},4500);};
 let saving=Promise.resolve();
 function compactGameNavigation(){return ui.view==='live'||ui.view==='current-lineup'||(ui.view==='archive'&&!!ui.statsId&&ui.statsReturn==='live');}
-let navTimeout;
+// Only an intentional bottom-handle tap/swipe may reveal the navigation.
+// Game action buttons never affect this state or the three-second timer.
+const NAV_IDLE_MS=3000;
+let navTimeout=null, navInteracting=false;
 function setGameNav(open){
  if(!compactGameNavigation())return;
  ui.menuOpen=!!open;
  const nav=document.querySelector('.bottom-nav.nav-compact');
- if(nav)nav.classList.toggle('is-collapsed',!ui.menuOpen);
- if(open)armNav();else clearTimeout(navTimeout);
+ if(nav){
+  nav.classList.toggle('is-collapsed',!ui.menuOpen);
+  const handle=nav.querySelector('.nav-handle');
+  if(handle)handle.setAttribute('aria-expanded',String(ui.menuOpen));
+  for(const button of nav.querySelectorAll('.nav-item'))button.tabIndex=ui.menuOpen?0:-1;
+ }
+ if(ui.menuOpen)armNav();else clearTimeout(navTimeout);
 }
 function armNav(){
  clearTimeout(navTimeout);
  if(!compactGameNavigation()||!ui.menuOpen)return;
+ if(navInteracting)return;
  navTimeout=setTimeout(()=>{
-  if(!ui.modal&&compactGameNavigation())setGameNav(false);
- },7000);
+  if(!navInteracting&&compactGameNavigation())setGameNav(false);
+ },NAV_IDLE_MS);
 }
-window.addEventListener('pointerdown',e=>{if(ui.menuOpen)armNav();},{passive:true});
-window.addEventListener('keydown',()=>{if(ui.menuOpen)armNav();});
+function enterLiveGame(){
+ navInteracting=false;
+ ui.menuOpen=true;
+ armNav();
+}
+// Keep navigation open while the user is hovering/focusing or touching its controls.
+root.addEventListener('pointerover',e=>{
+ if(e.target.closest('.bottom-nav.nav-compact .nav-item')){
+  navInteracting=true;clearTimeout(navTimeout);
+ }
+});
+root.addEventListener('pointerout',e=>{
+ if(!e.target.closest('.bottom-nav.nav-compact .nav-item'))return;
+ const nav=e.target.closest('.bottom-nav');
+ if(nav&&!nav.contains(e.relatedTarget)){navInteracting=false;armNav();}
+});
+root.addEventListener('focusin',e=>{
+ if(e.target.closest('.bottom-nav.nav-compact .nav-item')){navInteracting=true;clearTimeout(navTimeout);}
+});
+root.addEventListener('focusout',e=>{
+ if(e.target.closest('.bottom-nav.nav-compact .nav-item')){
+  navInteracting=false;armNav();
+ }
+});
 function commit(){
   data.lastView=ui.view;
   const snap=structuredClone(data);
@@ -871,7 +933,7 @@ function header(title='',subtitle=''){return `<header class="topbar"><button cla
 const back=(action='home',text='Zurück')=>`<button class="textlink backbutton" data-action="${action}">← ${text}</button>`;
 function homeScreen(){return `<div class="home-view"><div class="home-crest">🏐</div><h1>Serve<span class="iq-color">IQ</span></h1><p>Volleyball – Service – Score Tracker</p><small>Funktionsvorschau 0.2 · 6:6 · GitHub-Testversion</small></div>`;}
 function settingsScreen(){return `${back()}<h1>Einstellungen</h1><div class="panel form-stack"><div class="siq-audio-settings"><h2>Akustische Rückmeldung</h2><label class="siq-sound-toggle"><input type="checkbox" data-action="sound-toggle" ${siqAudioEnabled?'checked':''}> Töne bei Service und Punktvergabe</label><label class="siq-sound-volume">Lautstärke <input type="range" min="0" max="100" step="5" value="${siqAudioVolume}" data-action="sound-volume"></label><div class="siq-audio-tests"><button class="btn secondary" data-action="sound-preview" data-kind="normal">▶ Normaler Service</button><button class="btn secondary" data-action="sound-preview" data-kind="point">▶ Punkt-Doppelton</button></div><p class="small muted">Normaler Service: kurzer tief-mittlerer Ton, noch kein Punkt. Punktgewinn oder Servicefehler: Doppelton.</p></div><button class="btn secondary" data-action="json-export">⇩ Datensicherung erstellen (JSON)</button><button class="btn secondary" data-action="json-import">⇧ Datensicherung importieren (JSON)</button><p class="small muted">Die Daten bleiben lokal auf diesem Gerät. Für die Übertragung auf andere Geräte eine JSON-Sicherung exportieren.</p><small>ServeIQ 0.2 · GitHub-Testversion</small></div>`;}
-function shell(content){return `${header()}<main class="main">${content}</main><nav class="bottom-nav ${compactGameNavigation()?'nav-compact':''} ${compactGameNavigation()&&!ui.menuOpen?'is-collapsed':''}" aria-label="Hauptnavigation"><button type="button" class="nav-handle" data-action="nav-handle" aria-label="Navigation ein- oder ausblenden" aria-expanded="${ui.menuOpen}"><span></span></button><button data-action="nav" data-view="teams" class="nav-item ${ui.view==='teams'?'active':''}">${icon('♙')}<span>Teams</span></button><button data-action="nav" data-view="new" class="nav-item ${ui.view==='new'?'active':''}">${icon('＋')}<span>Neues Spiel</span></button><button data-action="nav" data-view="live" class="nav-item ${ui.view==='live'?'active':''}">${icon('◉')}<span>Live-Game</span></button><button data-action="nav" data-view="archive" class="nav-item ${ui.view==='archive'?'active':''}">${icon('▤')}<span>Archiv</span></button></nav>${ui.toast?`<div class="toast" role="status">${esc(ui.toast)}</div>`:''}${modalHtml()}`;}
+function shell(content){return `${header()}<main class="main">${content}</main><nav class="bottom-nav ${compactGameNavigation()?'nav-compact':''} ${compactGameNavigation()&&!ui.menuOpen?'is-collapsed':''}" aria-label="Hauptnavigation"><button type="button" class="nav-handle" data-action="nav-handle" aria-label="Navigation ein- oder ausblenden" aria-expanded="${ui.menuOpen}"><span></span></button><button data-action="nav" data-view="teams" tabindex="${compactGameNavigation()&&!ui.menuOpen?-1:0}" class="nav-item ${ui.view==='teams'?'active':''}">${icon('♙')}<span>Teams</span></button><button data-action="nav" data-view="new" tabindex="${compactGameNavigation()&&!ui.menuOpen?-1:0}" class="nav-item ${ui.view==='new'?'active':''}">${icon('＋')}<span>Neues Spiel</span></button><button data-action="nav" data-view="live" tabindex="${compactGameNavigation()&&!ui.menuOpen?-1:0}" class="nav-item ${ui.view==='live'?'active':''}">${icon('◉')}<span>Live-Game</span></button><button data-action="nav" data-view="archive" tabindex="${compactGameNavigation()&&!ui.menuOpen?-1:0}" class="nav-item ${ui.view==='archive'?'active':''}">${icon('▤')}<span>Archiv</span></button></nav>${ui.toast?`<div class="toast" role="status">${esc(ui.toast)}</div>`:''}${modalHtml()}`;}
 function renderAtTop(){render();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant'}));}
 function render(){const prevModal=root.querySelector('.nextset-modal');const previousModalScroll=prevModal?.scrollTop||0;const prevY=window.scrollY;if(ui.showSplash){root.innerHTML=`<main class="splash"><div class="splash-ball">🏐</div><div class="wordmark">Serve<span>IQ</span></div><p>Volleyball – Service – Score Tracker</p><button class="btn primary huge" data-action="intro">START</button><small>Funktionsprototyp · Version 0.2</small></main>`;return;}
   let content=ui.view==='home'?homeScreen():ui.view==='settings'?settingsScreen():ui.view==='teams'?teamsScreen():ui.view==='new'?newScreen():ui.view==='live'?liveScreen():ui.view==='current-lineup'?currentLineupScreen():archiveScreen();
@@ -1179,7 +1241,7 @@ function captureDraftForm(){
 }
 function confirmAction(msg,fn){ui.modal='confirm';ui.alertText=msg;ui.confirmFn=fn;render();}
 function afterEvent(event){const m=mcurrent();try{const x=pushEvent(m,event);data.matches[data.matches.findIndex(k=>k.id===m.id)]=x;commit();render();if(event.type==='NORMAL')siqPlay('normal');else if(event.type==='RALLY')siqPlay('point');return true;}catch(err){showAlert(err.message);return false;}}
-function navigate(view){ui.view=view;ui.menuOpen=view!=='live'&&view!=='current-lineup';armNav();ui.modal='';ui.teamId=null;ui.editingTeam=null;if(view!=='archive')ui.statsId=null;
+function navigate(view){ui.view=view;if(view==='live')enterLiveGame();else{ui.menuOpen=view!=='current-lineup';clearTimeout(navTimeout);navInteracting=false;}ui.modal='';ui.teamId=null;ui.editingTeam=null;if(view!=='archive')ui.statsId=null;
   if(view==='live'){const chosen=data.matches.find(x=>x.id===ui.matchId&&!x.archivedEarly&&!replay(x).finished);const a=chosen||activeMatch();if(a)ui.matchId=a.id;}
   commit();renderAtTop();}
 root.addEventListener('click',async e=>{
@@ -1192,7 +1254,7 @@ root.addEventListener('click',async e=>{
     case'settings':ui.view='settings';ui.modal='';render();break;
     case'sound-preview':siqPlay(b.dataset.kind);break;
     case'nav':if(ui.editingTeam){const target=b.dataset.view;confirmAction('Teamerstellung verlassen? Nicht gespeicherte Eingaben werden verworfen.',()=>{ui.editingTeam=false;ui.teamForm=null;navigate(target);});break;}if(ui.draft){captureDraftForm();ui.modal='draft-exit';render();break;}navigate(b.dataset.view);break;
-    case'nav-handle':setGameNav(!ui.menuOpen);break;
+    case'nav-handle':navInteracting=false;setGameNav(!ui.menuOpen);break;
     case'new-team':ui.teamId=null;ui.editingTeam=true;ui.teamForm={club:'VBC Interlaken',category:'Damen',league:'4. Liga',season:seasonOptions()[0],players:[]};render();break;
     case'team-open':ui.teamId=id;render();break;
     case'team-back':ui.teamId=null;render();break;
@@ -1268,7 +1330,7 @@ root.addEventListener('click',async e=>{
         ui.matchId=started.id;ui.draft=null;ui.wizardStep=0;ui.teamId=null;ui.view='teams';renderAtTop();
       }
       break;}
-    case'open-live':ui.matchId=id;ui.view='live';ui.menuOpen=false;ui.statsId=null;armNav();render();break;
+    case'open-live':ui.matchId=id;ui.view='live';ui.statsId=null;enterLiveGame();render();break;
     case'normal':afterEvent({type:'NORMAL'});break;
     case'normal-cancel':{
       const m=mcurrent();if(!m)break;const st=replay(m);
@@ -1359,16 +1421,21 @@ fileInput.addEventListener('change',async()=>{const file=fileInput.files?.[0];if
 });
 (async()=>{data=await load();ui.view='teams';armNav();if(ui.view==='live'){const m=activeMatch();if(m)ui.matchId=m.id;}render();})();
 
-let lastNavScrollY=window.scrollY;
-window.addEventListener('scroll',()=>{
- const y=window.scrollY,delta=y-lastNavScrollY;
- lastNavScrollY=y;
- if(!compactGameNavigation()||ui.modal||Math.abs(delta)<7)return;
- if(delta>0)setGameNav(true);
- else if(delta<0)setGameNav(false);
+// A deliberate upward gesture from the bottom edge opens the nav.
+// Normal page scrolling never opens/closes it.
+let navSwipeY=null;
+root.addEventListener('touchstart',e=>{
+ if(e.touches.length===1&&e.touches[0].clientY>=window.innerHeight-72&&compactGameNavigation())
+  navSwipeY=e.touches[0].clientY;
 },{passive:true});
-
-let swipeStart=0;root.addEventListener('touchstart',e=>{if(e.touches.length===1&&e.touches[0].clientY>window.innerHeight-60)swipeStart=e.touches[0].clientY;},{passive:true});root.addEventListener('touchend',e=>{if(swipeStart&&e.changedTouches[0].clientY<swipeStart-22&&compactGameNavigation()){setGameNav(true);}swipeStart=0;},{passive:true});
+root.addEventListener('touchend',e=>{
+ if(navSwipeY!==null&&e.changedTouches.length&&
+    navSwipeY-e.changedTouches[0].clientY>28&&compactGameNavigation()){
+   navInteracting=false;setGameNav(true);
+ }
+ navSwipeY=null;
+},{passive:true});
+root.addEventListener('touchcancel',()=>{navSwipeY=null;},{passive:true});
 
 // Drag/drop on desktop, plus mobile touch drag on initial and subsequent sets.
 let dragging=null;

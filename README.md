@@ -16,3 +16,14 @@ Splash-Screen und Logos sind byte-identisch zur Blue-Theme-Basis. Spielereignisl
 - Satz 5: Erster Service und Seite müssen vor Satzbeginn gewählt werden. Automatischer einmaliger Seitenwechsel nach 8 Punkten; Satzgewinn ab 15 Punkten, mindestens zwei Punkte Differenz.
 - «Punkt vor» nur bei verfügbarer Rücknahme aktiv; nach neuer Aktion wird die Vorwärts-Historie verworfen.
 - SPLASH und Tondateien unverändert.
+
+
+## Update: Navigation und Punkterfassung (09.11.2026)
+- Live-Game: untere Navigation bei direktem Öffnen für 3 Sekunden sichtbar; danach automatische Ausblendung.
+- Erneut öffnen nur mit Griff am unteren Rand oder Wischgeste von unten nach oben.
+- Spielbuttons (Normaler Service, Ass, Servicefehler, Punkt zurück/vor, Wechsel, Statistik, Aufstellung) lassen die Navigation unverändert.
+- Bereits geöffnete Navigation bleibt beim direkten Bedienen/Fokussieren sichtbar; danach erneute Ausblendung.
+- Punkteentscheidung ohne Hauptnavigation, unverändert.
+- Grosse, feste hellblaue Punktebuttons ohne Grössenänderung durch Maus/Stift/Finger; auch nach Servicefehler.
+- VBC-Interlaken-Logo unverändert, Anzeige responsive mit contain.
+- Logos und Splash-Screen-Dateien sind identisch zur vorherigen Version.
