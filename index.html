@@ -309,6 +309,48 @@ html{scroll-behavior:smooth}body{background:#f2f5f9;color:var(--text)}
 @media(prefers-reduced-motion:reduce){
  .bottom-nav.nav-compact,.v7-actions .v7-btn,.v7-choice .v7-btn{transition:none!important}
 }
+
+/* ServeIQ Sprachaufstellung 2026-11: elevated flat court, original net/court geometry retained */
+.voice-console{background:linear-gradient(145deg,#123b63,#0b2948);border:1px solid #3574a5;border-radius:16px;padding:14px;margin:10px 0 16px;box-shadow:0 5px 0 #061f3a,0 15px 23px #020e1b3d;color:#fff}
+.voice-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.voice-heading strong{font-size:1.05rem}.voice-heading small{display:block;color:#c2def3;font-size:.77rem;margin-top:3px}
+.voice-console .voice-buttons{display:flex;gap:9px;flex-wrap:wrap}
+.voice-console .voice-mic{min-height:53px;flex:1;background:#0868bb!important;border:1px solid #4094dc!important;color:#fff;font-weight:800;border-radius:12px;box-shadow:0 4px 0 #043a72!important;transform:none!important}
+.voice-console .voice-mic.on{background:#165e77!important;border-color:#6fe0b0!important;box-shadow:0 4px 0 #06434b!important}
+.voice-console .voice-status{background:#174568;border:1px solid #376b93;border-radius:10px;padding:10px 12px;margin-top:10px;min-height:42px;color:#f2f9ff;font-size:.85rem}
+.voice-console .voice-status.success{border-color:#4acf9a;color:#bff5d9}.voice-console .voice-status.error{border-color:#ffc07e;color:#fff0d6}
+.voice-command-input{display:flex;gap:6px;margin-top:10px}.voice-command-input input{flex:1;min-width:0;background:#eaf5fd;border:1px solid #8ab4d4;border-radius:9px;color:#0f3155;padding:8px 11px}.voice-command-input button{white-space:nowrap}
+.voice-progress{display:flex;justify-content:space-between;margin-top:11px;color:#b7d9ef;font-size:.8rem;font-weight:700}
+.lineup-edit-panel{background:linear-gradient(160deg,#17568a,#103d6c)!important;border:1px solid #65afd9!important;padding:12px!important;border-radius:16px!important;box-shadow:0 5px 0 #052a51,0 12px 24px #021a3355!important}
+.lineup-edit-panel .court-net{border-radius:8px 8px 0 0;text-shadow:0 2px 4px #06243f}
+.lineup-edit-panel .live-lineup-court{background:linear-gradient(145deg,#f5a167,#e98f53)!important;border-left:4px solid #fff;border-right:4px solid #fff;border-bottom:4px solid #fff;gap:11px;padding:13px 10px 24px!important}
+.lineup-edit-panel .live-lineup-position{gap:6px!important}.lineup-edit-panel .live-lineup-position>small{font-size:.75rem!important;color:#173953;font-weight:850}
+.lineup-edit-panel .live-lineup-position .live-lineup-tile{height:83px!important;min-height:83px!important;max-height:83px!important;flex-basis:83px!important;border-radius:11px!important;box-shadow:0 4px 0 #0d477b,0 7px 12px #031e3c22!important;transition:border-color .14s ease,background .14s ease!important;transform:none!important}
+.lineup-edit-panel .live-lineup-position:not(.filled) .live-lineup-tile{background:#d9efff!important;border:2px dashed #347cb2!important;box-shadow:0 3px 0 #3976a0!important}
+.lineup-edit-panel .live-lineup-position.filled .live-lineup-tile{background:linear-gradient(145deg,#187bc7,#075ca5)!important;border:2px solid #72c7f4!important}
+.lineup-edit-panel .live-lineup-position:active .live-lineup-tile,.lineup-edit-panel .live-lineup-position:hover .live-lineup-tile{transform:none!important}
+.libero-station{margin-top:14px!important}.libero-drop{border:2px dashed #9eb0be!important;background:#e8eff5!important;color:#143d5e!important;min-height:62px;font-weight:800}.libero-drop.occupied{background:#eecee5!important;border-color:#c96aa7!important}
+.roster-tile.chosen:after{content:'✓';position:absolute;top:3px;right:5px;border-radius:50%;background:#19a96e;color:#fff;width:16px;height:16px;display:grid;place-items:center;font-size:11px}.roster-tile{position:relative}.roster-tile.chosen{outline:2px solid #48c5b3;outline-offset:-3px}.roster-tile.chosen em{display:none}
+@media(max-width:480px){.voice-console{padding:11px}.voice-command-input{flex-wrap:wrap}.voice-command-input button{min-height:42px}.lineup-edit-panel{padding:7px!important}.lineup-edit-panel .live-lineup-court{gap:5px;padding:10px 5px 18px!important}.lineup-edit-panel .live-lineup-position .live-lineup-tile{height:70px!important;min-height:70px!important;max-height:70px!important;flex-basis:70px!important}.voice-heading strong{font-size:.95rem}}
+
+/* Phase 2 – gemeinsame Feinarbeit für Aufstellungen 1 bis 5 und Matchkader */
+.team-title-edit{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.team-pencil{background:#1168b0;border:1px solid #6bb5ea;border-radius:9px;color:white;font-size:1.12rem;min-width:39px;min-height:36px;cursor:pointer}
+.team-delete-bottom{margin-top:22px;padding-top:12px;border-top:1px solid #43749b;display:flex;justify-content:flex-end}
+.team-delete-bottom .btn{min-height:42px}
+.item-card[data-action="player-edit"]{min-height:48px!important;padding:7px 12px!important;gap:10px!important;margin-bottom:6px!important}
+.item-card[data-action="player-edit"] .circle-number{width:34px!important;height:34px!important;min-width:34px!important}
+.item-card[data-action="player-edit"] small{font-size:.76rem}
+.number-pages{margin:0!important}
+.roster-tile.chosen:after{content:'✓';color:#fff;background:#16a45d;width:17px;height:17px;right:4px;top:3px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.roster-tile.chosen{outline:2px solid #45b58c!important;outline-offset:-3px}
+.v7-actions .v7-btn,.v7-actions-opponent .v7-btn{min-height:clamp(100px,19vh,145px)!important;transform:none!important}
+.v7-actions .v7-btn:hover,.v7-actions-opponent .v7-btn:hover,.v7-actions .v7-btn:active{transform:none!important}
+/* Two choices share the same reference height as the three service actions. */
+.v7-decision .v7-choice{flex:none!important;min-height:0!important;max-height:none!important;grid-template-columns:repeat(2,minmax(0,1fr))}
+.v7-decision .v7-choice .v7-btn{height:clamp(100px,19vh,145px)!important;min-height:0!important;font-size:clamp(1.04rem,3.9vw,1.45rem)!important;transform:none!important}
+.v7-decision{justify-content:flex-start!important;padding-top:max(22px,env(safe-area-inset-top))!important}
+@media(max-width:510px){.v7-decision .v7-choice .v7-btn{font-size:1.04rem!important;padding:8px 5px!important}}
 </style><style id="serveiq-blue-theme">
 /* ServeIQ Phase 2: unified brand-blue interface; presentation-only override */
 :root{--blue:#0868bb;--deep:#0b2d54;--pale:#bfe9ff;--border:#376c9d;--text:#f7fbff;color:#f7fbff;background:#0b2d54}
@@ -350,6 +392,25 @@ body:has(.splash){background:#0b2850}
 body:has(.splash):before{display:none}
 body:has(.splash) .splash .btn{background:#0874d5!important;color:#fff!important;border:0!important;box-shadow:none!important}
 @media(prefers-reduced-motion:reduce){.v7-team.is-serving,.v7-service-label{animation:none}}
+
+/* Phase 2 – gemeinsame Feinarbeit für Aufstellungen 1 bis 5 und Matchkader */
+.team-title-edit{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.team-pencil{background:#1168b0;border:1px solid #6bb5ea;border-radius:9px;color:white;font-size:1.12rem;min-width:39px;min-height:36px;cursor:pointer}
+.team-delete-bottom{margin-top:22px;padding-top:12px;border-top:1px solid #43749b;display:flex;justify-content:flex-end}
+.team-delete-bottom .btn{min-height:42px}
+.item-card[data-action="player-edit"]{min-height:48px!important;padding:7px 12px!important;gap:10px!important;margin-bottom:6px!important}
+.item-card[data-action="player-edit"] .circle-number{width:34px!important;height:34px!important;min-width:34px!important}
+.item-card[data-action="player-edit"] small{font-size:.76rem}
+.number-pages{margin:0!important}
+.roster-tile.chosen:after{content:'✓';color:#fff;background:#16a45d;width:17px;height:17px;right:4px;top:3px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.roster-tile.chosen{outline:2px solid #45b58c!important;outline-offset:-3px}
+.v7-actions .v7-btn,.v7-actions-opponent .v7-btn{min-height:clamp(100px,19vh,145px)!important;transform:none!important}
+.v7-actions .v7-btn:hover,.v7-actions-opponent .v7-btn:hover,.v7-actions .v7-btn:active{transform:none!important}
+/* Two choices share the same reference height as the three service actions. */
+.v7-decision .v7-choice{flex:none!important;min-height:0!important;max-height:none!important;grid-template-columns:repeat(2,minmax(0,1fr))}
+.v7-decision .v7-choice .v7-btn{height:clamp(100px,19vh,145px)!important;min-height:0!important;font-size:clamp(1.04rem,3.9vw,1.45rem)!important;transform:none!important}
+.v7-decision{justify-content:flex-start!important;padding-top:max(22px,env(safe-area-inset-top))!important}
+@media(max-width:510px){.v7-decision .v7-choice .v7-btn{font-size:1.04rem!important;padding:8px 5px!important}}
 </style><style id="serveiq-audio-ui">
 /* Unified blue-theme audio controls: existing elevated-flat design retained. */
 .siq-audio-settings{border:1px solid #4e84ad;border-radius:14px;padding:15px;background:#154771;box-shadow:0 4px 0 #07294d}
@@ -359,6 +420,25 @@ body:has(.splash) .splash .btn{background:#0874d5!important;color:#fff!important
 .siq-sound-volume input{accent-color:#6ac9f0;min-height:30px!important;padding:0!important;border:0!important;background:transparent!important}
 .siq-audio-tests{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .siq-audio-tests .btn{min-width:0;font-size:.84rem;overflow-wrap:anywhere}
+
+/* Phase 2 – gemeinsame Feinarbeit für Aufstellungen 1 bis 5 und Matchkader */
+.team-title-edit{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.team-pencil{background:#1168b0;border:1px solid #6bb5ea;border-radius:9px;color:white;font-size:1.12rem;min-width:39px;min-height:36px;cursor:pointer}
+.team-delete-bottom{margin-top:22px;padding-top:12px;border-top:1px solid #43749b;display:flex;justify-content:flex-end}
+.team-delete-bottom .btn{min-height:42px}
+.item-card[data-action="player-edit"]{min-height:48px!important;padding:7px 12px!important;gap:10px!important;margin-bottom:6px!important}
+.item-card[data-action="player-edit"] .circle-number{width:34px!important;height:34px!important;min-width:34px!important}
+.item-card[data-action="player-edit"] small{font-size:.76rem}
+.number-pages{margin:0!important}
+.roster-tile.chosen:after{content:'✓';color:#fff;background:#16a45d;width:17px;height:17px;right:4px;top:3px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.roster-tile.chosen{outline:2px solid #45b58c!important;outline-offset:-3px}
+.v7-actions .v7-btn,.v7-actions-opponent .v7-btn{min-height:clamp(100px,19vh,145px)!important;transform:none!important}
+.v7-actions .v7-btn:hover,.v7-actions-opponent .v7-btn:hover,.v7-actions .v7-btn:active{transform:none!important}
+/* Two choices share the same reference height as the three service actions. */
+.v7-decision .v7-choice{flex:none!important;min-height:0!important;max-height:none!important;grid-template-columns:repeat(2,minmax(0,1fr))}
+.v7-decision .v7-choice .v7-btn{height:clamp(100px,19vh,145px)!important;min-height:0!important;font-size:clamp(1.04rem,3.9vw,1.45rem)!important;transform:none!important}
+.v7-decision{justify-content:flex-start!important;padding-top:max(22px,env(safe-area-inset-top))!important}
+@media(max-width:510px){.v7-decision .v7-choice .v7-btn{font-size:1.04rem!important;padding:8px 5px!important}}
 </style></head><body><div id="app"><main class="loading">ServeIQ 0.2 wird geladen …</main></div><script type="module">// model
 /** ServeIQ v0.1 – pure, deterministic volleyball rules and statistics. */
 const VERSION = 1;
@@ -870,7 +950,6 @@ async function savePlayerFromFields(){
   let error='';
   if(!t)error='Das ausgewählte Team wurde nicht gefunden.';
   else if(!first)error='Bitte den Vornamen eingeben.';
-  else if(!last)error='Bitte den Nachnamen eingeben.';
   else if(!Number.isInteger(number)||number<1||number>99)error='Bitte eine Trikotnummer von 1 bis 99 auswählen.';
   else if(t.players.some(p=>Number(p.number)===number&&p.id!==ui.playerId))error='Diese Trikotnummer ist bereits vergeben. Bitte eine andere Nummer auswählen.';
   else if(!['','A','M','P','D','L'].includes(position))error='Bitte eine gültige Position auswählen.';
@@ -916,7 +995,8 @@ async function persistBeforeNavigation(mutator,label){
     let stored=await Promise.race([saving,new Promise(resolve=>setTimeout(()=>resolve(false),3500))]);
     if(!stored){try{localStorage.setItem('serveiq_v02_preview_emergency',JSON.stringify(snap));stored=true;}catch{}}
     if(!stored)throw Error('Dein Browser hat die lokale Speicherung blockiert. Bitte öffne die Datei in einem normalen Browserfenster.');
-    ui.toast=label;
+    ui.toast=label==='Spieldaten gespeichert.'?'':label;
+    if(ui.toast){const notice=ui.toast;setTimeout(()=>{if(ui.toast===notice){ui.toast='';render();}},2000);}
     return true;
   }catch(err){
     data=old;
@@ -935,7 +1015,7 @@ function homeScreen(){return `<div class="home-view"><div class="home-crest">�
 function settingsScreen(){return `${back()}<h1>Einstellungen</h1><div class="panel form-stack"><div class="siq-audio-settings"><h2>Akustische Rückmeldung</h2><label class="siq-sound-toggle"><input type="checkbox" data-action="sound-toggle" ${siqAudioEnabled?'checked':''}> Töne bei Service und Punktvergabe</label><label class="siq-sound-volume">Lautstärke <input type="range" min="0" max="100" step="5" value="${siqAudioVolume}" data-action="sound-volume"></label><div class="siq-audio-tests"><button class="btn secondary" data-action="sound-preview" data-kind="normal">▶ Normaler Service</button><button class="btn secondary" data-action="sound-preview" data-kind="point">▶ Punkt-Doppelton</button></div><p class="small muted">Normaler Service: kurzer tief-mittlerer Ton, noch kein Punkt. Punktgewinn oder Servicefehler: Doppelton.</p></div><button class="btn secondary" data-action="json-export">⇩ Datensicherung erstellen (JSON)</button><button class="btn secondary" data-action="json-import">⇧ Datensicherung importieren (JSON)</button><p class="small muted">Die Daten bleiben lokal auf diesem Gerät. Für die Übertragung auf andere Geräte eine JSON-Sicherung exportieren.</p><small>ServeIQ 0.2 · GitHub-Testversion</small></div>`;}
 function shell(content){return `${header()}<main class="main">${content}</main><nav class="bottom-nav ${compactGameNavigation()?'nav-compact':''} ${compactGameNavigation()&&!ui.menuOpen?'is-collapsed':''}" aria-label="Hauptnavigation"><button type="button" class="nav-handle" data-action="nav-handle" aria-label="Navigation ein- oder ausblenden" aria-expanded="${ui.menuOpen}"><span></span></button><button data-action="nav" data-view="teams" tabindex="${compactGameNavigation()&&!ui.menuOpen?-1:0}" class="nav-item ${ui.view==='teams'?'active':''}">${icon('♙')}<span>Teams</span></button><button data-action="nav" data-view="new" tabindex="${compactGameNavigation()&&!ui.menuOpen?-1:0}" class="nav-item ${ui.view==='new'?'active':''}">${icon('＋')}<span>Neues Spiel</span></button><button data-action="nav" data-view="live" tabindex="${compactGameNavigation()&&!ui.menuOpen?-1:0}" class="nav-item ${ui.view==='live'?'active':''}">${icon('◉')}<span>Live-Game</span></button><button data-action="nav" data-view="archive" tabindex="${compactGameNavigation()&&!ui.menuOpen?-1:0}" class="nav-item ${ui.view==='archive'?'active':''}">${icon('▤')}<span>Archiv</span></button></nav>${ui.toast?`<div class="toast" role="status">${esc(ui.toast)}</div>`:''}${modalHtml()}`;}
 function renderAtTop(){render();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant'}));}
-function render(){const prevModal=root.querySelector('.nextset-modal');const previousModalScroll=prevModal?.scrollTop||0;const prevY=window.scrollY;if(ui.showSplash){root.innerHTML=`<main class="splash"><div class="splash-ball">🏐</div><div class="wordmark">Serve<span>IQ</span></div><p>Volleyball – Service – Score Tracker</p><button class="btn primary huge" data-action="intro">START</button><small>Funktionsprototyp · Version 0.2</small></main>`;return;}
+function render(){if(voiceWanted&&!voiceContext())voiceStop();const prevModal=root.querySelector('.nextset-modal');const previousModalScroll=prevModal?.scrollTop||0;const prevY=window.scrollY;if(ui.showSplash){root.innerHTML=`<main class="splash"><div class="splash-ball">🏐</div><div class="wordmark">Serve<span>IQ</span></div><p>Volleyball – Service – Score Tracker</p><button class="btn primary huge" data-action="intro">START</button><small>Funktionsprototyp · Version 0.2</small></main>`;return;}
   let content=ui.view==='home'?homeScreen():ui.view==='settings'?settingsScreen():ui.view==='teams'?teamsScreen():ui.view==='new'?newScreen():ui.view==='live'?liveScreen():ui.view==='current-lineup'?currentLineupScreen():archiveScreen();
   const decision=ui.view==='live'&&!!mcurrent()&&!mcurrent().archivedEarly&&(()=>{const st=replay(mcurrent());return !!(st.current?.pending&&!st.current.winner&&!st.error);})();
   root.innerHTML=decision?content:shell(content);if(ui.modal==='nextset'){const nextModal=root.querySelector('.nextset-modal');if(nextModal)nextModal.scrollTop=previousModalScroll;}if(prevY&&ui.modal==='nextset')window.scrollTo(0,prevY); }
@@ -969,22 +1049,22 @@ function teamEditor(){const t=ui.teamForm||{};return `${back('team-cancel')}<div
     <p class="small muted">Nach dem Speichern öffnet sich direkt der Teamkader. Spielerinnen werden einzeln und automatisch im Teamkader gespeichert.</p>
   </form>`;}
 function categoryLeagues(c){return c==='Damen'?['2. Liga','3. Liga','4. Liga','5. Liga']:c==='Herren'?['2. Liga','3. Liga','4. Liga']:c==='Juniorinnen'?['U23','U20','U18','U16','U14','Kids Volley']:['Mixed'];}
-function teamDetails(t){const rows=playersFor(t);if(ui.sortMode==='position'){const order=['P','M','A','D','L',''];rows.sort((a,b)=>order.indexOf(a.position||'')-order.indexOf(b.position||'') || a.number-b.number);}return `<section class="screen-head"><div><button class="textlink" data-action="team-back">‹ Alle Teams</button><h1>${esc(t.club)}</h1><p>${esc(teamName(t))}</p></div></section>
-    <div class="action-row"><button class="btn secondary" data-action="team-edit" data-id="${t.id}">Team bearbeiten</button><button class="btn danger-ghost" data-action="team-delete" data-id="${t.id}">Löschen</button></div>
+function teamDetails(t){const rows=playersFor(t);if(ui.sortMode==='position'){const order=['P','M','A','D','L',''];rows.sort((a,b)=>order.indexOf(a.position||'')-order.indexOf(b.position||'') || a.number-b.number);}return `<section class="screen-head"><div><button class="textlink" data-action="team-back">‹ Alle Teams</button><h1 class="team-title-edit">${esc(t.club)} <button class="team-pencil" type="button" data-action="team-edit" data-id="${t.id}" aria-label="Team bearbeiten" title="Team bearbeiten">✎</button></h1><p>${esc(teamName(t))}</p></div></section>
     <div class="screen-head tighter"><h2>Kader</h2></div><div class="roster-toolbar"><button class="btn primary" data-action="player-new">＋ Spielerin</button><button class="btn secondary" data-action="roster-sort">Sortierung: ${ui.sortMode==='number'?'Nr.':'Position'}</button></div>
     ${rows.length?rows.map(p=>`<button class="item-card" data-action="player-edit" data-id="${p.id}"><span class="circle-number">${p.number}</span><span><strong>${esc(p.first)} ${esc(p.last)}</strong><small>${esc(({P:'Pass',M:'Mitte',A:'Aussen',D:'Diagonal',L:'Libera'})[p.position]||'Position offen')}</small></span>${icon('›')}</button>`).join(''):'<div class="empty">Noch keine Spielerinnen im Kader.</div>'}
-    <p class="small muted">Spielhistorie und Statistiken behalten die damaligen Spielerinnendaten auch nach Änderungen im Team.</p>
-    <p class="small muted">Änderungen am Kader werden direkt beim Speichern einer Spielerin übernommen.</p>`;}
+    ${t.players.filter(p=>p.position!=='L').length>=6?`<button class="btn primary huge wide" data-action="team-new-match" data-id="${t.id}">Jetzt neues Spiel erstellen</button>`:''}
+    <div class="team-delete-bottom"><button class="btn danger-ghost" data-action="team-delete" data-id="${t.id}">Team löschen</button></div>`;}
 function playerModal(){const t=data.teams.find(x=>x.id===ui.teamId),p=t?.players.find(x=>x.id===ui.playerId);if(!t)return '';
   const base=ui.playerNumberPage||0,low=base*20+1,high=Math.min(99,low+19);
   return `<div class="modal-backdrop" data-action="modal-backdrop"><section class="modal" role="dialog" aria-modal="true"><h2>${p?'Spielerin bearbeiten':'Spielerin hinzufügen'}</h2>
-    <form data-form="player" class="form-stack"><label>Vorname<input name="first" autofocus required autocomplete="off" value="${attrs(ui.playerDraft?.first??p?.first??'')}"></label><label>Nachname<input name="last" required autocomplete="off" value="${attrs(ui.playerDraft?.last??p?.last??'')}"></label>
+    <form data-form="player" class="form-stack"><label>Vorname<input name="first" autofocus required autocomplete="off" value="${attrs(ui.playerDraft?.first??p?.first??'')}"></label><label>Nachname<input name="last" autocomplete="off" value="${attrs(ui.playerDraft?.last??p?.last??'')}"></label>
     <label>Position<select name="position">${selectOpt(['','P','M','A','D','L'],ui.playerDraft?.position??p?.position??'')}</select></label>
     <label>Trikotnummer<input type="number" name="number" inputmode="numeric" min="1" max="99" step="1" required placeholder="1–99" value="${attrs(ui.playerDraft?.number??ui.numberChoice??p?.number??'')}"></label>
     <span class="field-label">Oder Trikotnummer auswählen (${low}–${high})</span><div class="number-grid">${Array.from({length:high-low+1},(_,i)=>low+i).map(n=>`<button class="number-choice ${ui.numberChoice===n || (!ui.numberChoice&&p?.number===n)?'selected':''}" type="button" data-action="pick-number" data-number="${n}" ${t.players.some(a=>a.number===n&&a.id!==p?.id)?'disabled':''}>${n}</button>`).join('')}</div>
-    <div class="action-row"><button class="btn secondary" type="button" data-action="number-page" data-dir="-1" ${base===0?'disabled':''}>‹ 20</button><button class="btn secondary" type="button" data-action="number-page" data-dir="1" ${high===99?'disabled':''}>20 ›</button></div>
     ${ui.playerSaveError?`<div class="notice error" role="alert">${esc(ui.playerSaveError)}</div>`:''}
-    <div class="action-row"><button class="btn primary" type="button" data-action="player-save">Spielerin speichern</button><button class="btn secondary" type="button" data-action="modal-close">Abbrechen</button></div>
+    <button class="btn primary wide" type="button" data-action="player-save">Spielerin speichern</button>
+    <div class="action-row number-pages">${base>0?'<button class="btn secondary" type="button" data-action="number-page" data-dir="-1">‹ 20</button>':''}<button class="btn secondary" type="button" data-action="number-page" data-dir="1" ${high===99?'disabled':''}>20 ›</button></div>
+    <button class="btn secondary wide" type="button" data-action="modal-close">Abbrechen</button>
     ${p?`<button class="btn danger-ghost" type="button" data-action="player-delete" data-id="${p.id}">Spielerin löschen</button>`:''}
     </form></section></div>`;
 }
@@ -992,6 +1072,16 @@ function rosterCards(players,ids,action='roster-card') {return `<div class="rost
 // Shared visual court shell: same pitch, net, baseline and run-off for setup and current lineup.
 function lineupCourtShell(cells, mode='view'){
  return `<div class="current-lineup-panel ${mode==='edit'?'lineup-edit-panel':''}"><div class="court-net">NETZ</div><div class="live-lineup-court ${mode==='edit'?'lineup-edit-court':''}">${cells}</div><div class="live-lineup-baseline"></div><div class="live-lineup-outside" aria-hidden="true"></div></div>`;
+}
+function voicePanel(d,t,isNext){
+ const count=d.lineup.filter(Boolean).length;
+ return `<section class="voice-console" aria-label="Sprachaufstellung">
+ <div class="voice-heading"><div><strong>🎙 Sprachaufstellung</strong><small>Einmal starten · mehrere Befehle nacheinander</small></div><span class="voice-count">${count} / 6</span></div>
+ <div class="voice-buttons"><button type="button" class="voice-mic ${voiceWanted?'on':''}" data-action="voice-toggle">${voiceWanted?'■ Sprachsteuerung stoppen':'🎙 Sprachaufstellung starten'}</button></div>
+ <div class="voice-status ${voiceFeedbackKind}" role="status" aria-live="polite">${esc(voiceFeedback||'Bereit: «Nummer 4 auf Position 2»')}</div>
+ <div class="voice-command-input"><input type="text" data-voice-command placeholder="Oder Befehl eintippen" aria-label="Sprachbefehl zum Testen"><button type="button" class="btn secondary" data-action="voice-send">Zuordnen</button></div>
+ <div class="voice-progress"><span>Aufstellung erfasst</span><span>${count} von 6</span></div>
+ </section>`;
 }
 function courtUi(d,t,isNext=false){
  const players=t.players.filter(p=>d.rosterIds.includes(p.id)&&p.position!=='L');
@@ -1001,7 +1091,7 @@ function courtUi(d,t,isNext=false){
    const p=t.players.find(x=>x.id===d.lineup[i]);
    return `<button type="button" class="live-lineup-position volley-slot ${p?'filled':''}" data-action="${isNext?'next-position':'court-position'}" data-pos="${i}" data-drop="${i}" aria-label="Position ${i+1}${p?', '+esc(p.first)+' '+esc(p.last):', frei'}"><small>Position ${i+1}</small><span class="live-lineup-tile">${p?`<strong>${esc(p.number)}</strong><span>${esc(p.first)}</span><small>${esc(names[p.position]||'–')}</small>`:'<strong>＋</strong><span>Spielerin wählen</span>'}</span></button>`;
  };
- return `${lineupCourtShell(gridOrder.map(slot).join(''),'edit')}<div class="libero-station"><button type="button" class="libero-drop ${d.liberoId?'occupied':''}" data-action="court-libero" data-drop="-1" aria-label="Libera auswählen oder entfernen">${d.liberoId?(()=>{const p=t.players.find(x=>x.id===d.liberoId);return p?`<b>${esc(p.number)}</b><span>${esc(p.first)}</span><small>Libero</small><span class="libero-remove">✕ entfernen</span>`:'+ Libera wählen';})():'+ Libera wählen'}</button><small>Die Libera serviert nicht</small></div><h3>Spielerinnen auswählen / ziehen</h3>${rosterCards(t.players.filter(p=>d.rosterIds.includes(p.id)),[...d.lineup.filter(Boolean),d.liberoId].filter(Boolean),'court-player')}<p class="small muted">Kachel antippen und danach Feldposition bzw. Libera-Platz wählen – oder dorthin ziehen.</p>`;
+ return `${voicePanel(d,t,isNext)}${lineupCourtShell(gridOrder.map(slot).join(''),'edit')}<div class="libero-station"><button type="button" class="libero-drop ${d.liberoId?'occupied':''}" data-action="court-libero" data-drop="-1" aria-label="Libera auswählen oder entfernen">${d.liberoId?(()=>{const p=t.players.find(x=>x.id===d.liberoId);return p?`<b>${esc(p.number)}</b><span>${esc(p.first)}</span><small>Libero</small><span class="libero-remove">✕ entfernen</span>`:'+ Libera wählen';})():'+ Libera wählen'}</button><small>Die Libera serviert nicht</small></div><h3>Spielerinnen auswählen / ziehen</h3>${rosterCards(t.players.filter(p=>d.rosterIds.includes(p.id)),[...d.lineup.filter(Boolean),d.liberoId].filter(Boolean),'court-player')}<p class="small muted">Kachel antippen und danach Feldposition bzw. Libera-Platz wählen – oder dorthin ziehen.</p>`;
 }
 function lineupValidation(d){let missing=[];if(d.lineup.filter(Boolean).length!==6)missing.push('Sechs reguläre Spielerinnen aufstellen');if(new Set(d.lineup.filter(Boolean)).size!==d.lineup.filter(Boolean).length)missing.push('Spielerin doppelt aufgestellt');if(d.liberoId&&d.lineup.includes(d.liberoId))missing.push('Libera darf keine Rotationsposition besetzen');if(!d.lineup.filter(Boolean).every(id=>d.rosterIds.includes(id)))missing.push('Nur Matchkader-Spielerinnen einsetzen');if(!d.side)missing.push('Spielfeldseite wählen');if(!d.firstServe)missing.push('Ersten Service festlegen');return missing;}
 function newScreen(){
@@ -1244,6 +1334,47 @@ function afterEvent(event){const m=mcurrent();try{const x=pushEvent(m,event);dat
 function navigate(view){ui.view=view;if(view==='live')enterLiveGame();else{ui.menuOpen=view!=='current-lineup';clearTimeout(navTimeout);navInteracting=false;}ui.modal='';ui.teamId=null;ui.editingTeam=null;if(view!=='archive')ui.statsId=null;
   if(view==='live'){const chosen=data.matches.find(x=>x.id===ui.matchId&&!x.archivedEarly&&!replay(x).finished);const a=chosen||activeMatch();if(a)ui.matchId=a.id;}
   commit();renderAtTop();}
+
+// Local voice commands affect only the currently displayed lineup draft; game events are unchanged.
+const VoiceRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+let voiceRecognizer=null,voiceWanted=false,voiceStarting=false,voiceFeedback='',voiceFeedbackKind='';
+const voiceWordNumbers={null:0,ein:1,eins:1,eine:1,zwei:2,drei:3,vier:4,fuenf:5,funf:5,sechs:6,sieben:7,acht:8,neun:9,zehn:10,elf:11,zwoelf:12,zwolf:12,dreizehn:13,vierzehn:14,fuenfzehn:15,funfzehn:15,sechzehn:16,siebzehn:17,achtzehn:18,neunzehn:19,zwanzig:20};
+function voiceNorm(x){return String(x||'').toLowerCase().replace(/ß/g,'ss').replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()}
+function voiceNum(x){const y=voiceNorm(x);return /^\d+$/.test(y)?Number(y):(voiceWordNumbers[y]||null)}
+function voiceContext(){if(ui.view==='new'&&ui.wizardStep===2&&ui.draft&&ui.modal!=='nextset'){const d=ui.draft;return {d,players:data.teams.find(t=>t.id===d.teamId)?.players||[]};}
+ if(ui.modal==='nextset'&&ui.nextOptions){return {d:ui.nextOptions,players:mcurrent()?.teamSnapshot.players||[]};}return null;}
+function voiceStatus(msg,kind=''){voiceFeedback=msg;voiceFeedbackKind=kind;const el=root.querySelector('.voice-status');if(el){el.textContent=msg;el.className='voice-status '+kind;}}
+function voiceApply(raw){const ctx=voiceContext();if(!ctx){voiceStatus('Bitte zuerst die Startaufstellung öffnen.','error');return;}
+ const {d,players}=ctx,s=voiceNorm(raw),digits='(\\d{1,2}|[a-z]+)';
+ if(!s){voiceStatus('Kein Befehl erkannt.','error');return;}
+ let m=s.match(new RegExp('(?:nummer|spielerin(?: nummer)?|trikotnummer)\\s+'+digits+'.*?\\b(?:als |ist |auf |zur |kommt auf |kommt zur )?(?:die )?libera\\b'));
+ if(m){const n=voiceNum(m[1]);const p=players.find(x=>Number(x.number)===n&&d.rosterIds.includes(x.id));if(!p){voiceStatus('Nummer '+n+' ist nicht im Matchkader.','error');return;}
+ if(p.position!=='L'){voiceStatus('Nummer '+n+' ist nicht als Libera hinterlegt.','error');return;}
+ d.liberoId=p.id;ui.missing=[];render();voiceStatus('✓ '+p.first+' (#'+n+') als Libera zugeordnet.','success');return;}
+ m=s.match(/position\s+(\d|eins|zwei|drei|vier|fuenf|funf|sechs)\s+(?:frei|leeren|loeschen)/);
+ if(m){const pos=voiceNum(m[1]);if(pos<1||pos>6)return;d.lineup[pos-1]='';ui.missing=[];render();voiceStatus('✓ Position '+pos+' geleert.','success');return;}
+ m=s.match(new RegExp('(?:nummer|spielerin(?: nummer)?|trikotnummer)\\s+'+digits+'.*?\\bposition\\s+(\\d|eins|zwei|drei|vier|fuenf|funf|sechs)\\b'));
+ if(!m){voiceStatus('Nicht erkannt: «Nummer 4 auf Position 2».','error');return;}
+ const n=voiceNum(m[1]),pos=voiceNum(m[2]);if(!(pos>=1&&pos<=6)){voiceStatus('Nur Position 1 bis 6 zulässig.','error');return;}
+ const p=players.find(x=>Number(x.number)===n&&d.rosterIds.includes(x.id));
+ if(!p){voiceStatus('Nummer '+n+' ist nicht im ausgewählten Matchkader.','error');return;}
+ if(p.position==='L'){voiceStatus('Die Libera bitte separat zuordnen.','error');return;}
+ const old=d.lineup.indexOf(p.id),target=d.lineup[pos-1];
+ if(target&&target!==p.id&&!/korrigier|ersetze|wechsel/.test(s)){voiceStatus('Position '+pos+' ist bereits besetzt. Sage «Position '+pos+' frei» oder «Korrigiere: Nummer '+n+' auf Position '+pos+'».','error');return;}
+ if(old>=0&&old!==pos-1)d.lineup[old]='';d.lineup[pos-1]=p.id;ui.missing=[];render();voiceStatus('✓ Nummer '+n+' ('+p.first+') auf Position '+pos+'.','success');
+}
+function voiceSetUI(){const button=root.querySelector('[data-action="voice-toggle"]');if(button){button.textContent=voiceWanted?'■ Sprachsteuerung stoppen':'🎙 Sprachaufstellung starten';button.classList.toggle('on',voiceWanted);}}
+function voiceStop(){voiceWanted=false;voiceStarting=false;try{voiceRecognizer?.stop()}catch{}voiceSetUI();voiceStatus('Mikrofon aus. Manuelle Bedienung bleibt möglich.');}
+function voiceStart(){if(!voiceContext())return; if(!VoiceRecognition){voiceStatus('Spracherkennung ist hier nicht verfügbar. Bitte Textfeld nutzen oder Edge/Chrome über HTTPS testen.','error');return;}
+ if(voiceWanted){voiceStop();return;}
+ if(!voiceRecognizer){voiceRecognizer=new VoiceRecognition();voiceRecognizer.lang='de-DE';voiceRecognizer.continuous=true;voiceRecognizer.interimResults=false;voiceRecognizer.maxAlternatives=1;
+ voiceRecognizer.onstart=()=>{voiceStarting=false;voiceSetUI();voiceStatus('🎙 Mikrofon aktiv – mehrere Befehle nacheinander sprechen.');};
+ voiceRecognizer.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)voiceApply(e.results[i][0].transcript);};
+ voiceRecognizer.onerror=e=>{voiceStarting=false;if(['not-allowed','service-not-allowed','network','audio-capture'].includes(e.error)){voiceWanted=false;voiceSetUI();voiceStatus('Mikrofon/Spracherkennung nicht verfügbar: '+e.error+'. Nutze die Texteingabe.','error');}};
+ voiceRecognizer.onend=()=>{voiceStarting=false;if(!voiceWanted)return; if(!voiceContext()){voiceStop();return;}setTimeout(()=>{if(!voiceWanted||voiceStarting||!voiceContext())return;try{voiceStarting=true;voiceRecognizer.start()}catch(err){voiceWanted=false;voiceStarting=false;voiceSetUI();voiceStatus('Mikrofon wurde beendet. Bitte erneut starten.','error');}},450);};
+ }
+ voiceWanted=true;voiceSetUI();try{voiceStarting=true;voiceRecognizer.start()}catch(e){voiceWanted=false;voiceStarting=false;voiceSetUI();voiceStatus('Mikrofonstart fehlgeschlagen: '+e.message,'error');}
+}
 root.addEventListener('click',async e=>{
   const b=e.target.closest('[data-action]');if(!b)return;
   if(b.tagName==='BUTTON')e.preventDefault();
@@ -1268,7 +1399,7 @@ root.addEventListener('click',async e=>{
     case'player-new':ui.playerId=null;ui.playerDraft=null;ui.playerSaveError='';ui.numberChoice=null;ui.playerNumberPage=0;ui.modal='player';render();root.querySelector('form[data-form="player"] [name="first"]')?.focus({preventScroll:true});break;
     case'player-edit':{ui.playerId=id;ui.playerDraft=null;ui.playerSaveError='';const p=data.teams.find(t=>t.id===ui.teamId).players.find(p=>p.id===id);ui.numberChoice=p.number;ui.playerNumberPage=Math.floor((p.number-1)/20);ui.modal='player';render();break;}
     case'player-delete':confirmAction('Spielerin wirklich aus dem Team entfernen?',()=>{const t=data.teams.find(t=>t.id===ui.teamId);t.players=t.players.filter(p=>p.id!==id);ui.modal='';commit();render();});break;
-    case'number-page':ui.playerNumberPage=Math.max(0,Math.min(4,(ui.playerNumberPage||0)+Number(b.dataset.dir)));render();break;
+    case'number-page':{const f=root.querySelector('form[data-form="player"]');if(f)ui.playerDraft=Object.fromEntries(new FormData(f));ui.playerNumberPage=Math.max(0,Math.min(4,(ui.playerNumberPage||0)+Number(b.dataset.dir)));render();break;}
     case'pick-number':ui.playerSaveError='';ui.numberChoice=Number(b.dataset.number);ui.playerDraft={...(ui.playerDraft||{}),number:String(ui.numberChoice)};document.querySelectorAll('.number-choice').forEach(x=>x.classList.toggle('selected',Number(x.dataset.number)===ui.numberChoice));document.querySelector('form[data-form=player] [name=number]').value=String(ui.numberChoice);document.querySelector('form[data-form=player] [data-action=player-save]')?.focus();break;
     case'category-change':break;
     case'cancel-wizard':ui.draft=null;ui.wizardStep=0;render();break;
@@ -1283,7 +1414,10 @@ root.addEventListener('click',async e=>{
       const player=t?.players.find(p=>p.id===id);
       if(!player)throw Error('Spielerin nicht im Teamkader gefunden.');
       if(!ids.includes(id)&&t.players.some(p=>ids.includes(p.id)&&Number(p.number)===Number(player.number)))throw Error(`Trikotnummer ${player.number} ist bereits im Matchkader vergeben.`);
-      ui.draft.rosterIds=ids.includes(id)?ids.filter(x=>x!==id):[...ids,id];render();break;}
+      ui.draft.rosterIds=ids.includes(id)?ids.filter(x=>x!==id):[...ids,id];data.draft=structuredClone(ui.draft);data.draftStep=ui.wizardStep;commit();render();break;}
+    case'team-new-match':{const team=data.teams.find(t=>t.id===id);if(!team)break;if(data.draft){ui.view='new';ui.draft=null;ui.wizardStep=0;renderAtTop();break;}ui.view='new';ui.teamId=null;ui.draft={teamId:team.id,opponent:'',date:new Date().toLocaleDateString('en-CA'),rosterIds:[],lineup:Array(6).fill(''),liberoId:'',side:'',firstServe:''};ui.wizardStep=0;renderAtTop();break;}
+    case'voice-toggle':voiceStart();break;
+    case'voice-send':{const field=root.querySelector('[data-voice-command]');const v=field?.value?.trim();if(v){voiceApply(v);const updated=root.querySelector('[data-voice-command]');if(updated)updated.value='';}break;}
     case'court-player':ui.pickedPlayer=id;document.querySelectorAll('[data-action="court-player"]').forEach(x=>x.classList.toggle('picked',x.dataset.id===id));break;
     case'court-position':{const pos=Number(b.dataset.pos),d=ui.draft;const x=ui.pickedPlayer;if(x){const p=data.teams.find(t=>t.id===d.teamId)?.players.find(p=>p.id===x);if(!p||p.position==='L')throw Error('Libera bitte auf den separaten Libera-Platz ziehen.');const old=d.lineup.indexOf(x);if(old>=0)d.lineup[old]='';d.lineup[pos]=x;ui.pickedPlayer=null;}else{ui.pickerPos=pos;ui.modal='pick-player';}ui.missing=[];render();break;}
     case'court-libero':{const d=placingContext();if(!d)break;const id=ui.pickedPlayer;if(!id){d.liberoId='';ui.missing=[];render();break;}const roster=ui.modal==='nextset'?mcurrent()?.teamSnapshot.players:data.teams.find(t=>t.id===d.teamId)?.players;const player=roster?.find(p=>p.id===id);if(!player||player.position!=='L'||!d.rosterIds.includes(id))throw Error('Auf dem Libera-Platz ist nur eine ausgewählte Libera erlaubt.');d.liberoId=id;ui.pickedPlayer=null;ui.missing=[];render();break;}
@@ -1383,7 +1517,8 @@ root.addEventListener('change',e=>{
   if(t.name==='position'&&t.closest('[data-form="player"]')){ui.playerDraft={...(ui.playerDraft||{}),position:t.value};}
   if(t.name==='category'&&t.closest('[data-form="team"]')){const form=t.closest('form');form.querySelector('[name="league"]').innerHTML=selectOpt(categoryLeagues(t.value),'');}
 });
-root.addEventListener('keydown',e=>{
+root.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('[data-voice-command]')){e.preventDefault();const v=e.target.value.trim();if(v)voiceApply(v);return;}
+
   if(e.key!=='Enter')return;
   const form=e.target.closest('form[data-form="player"]');
   if(form){

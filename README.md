@@ -1,29 +1,16 @@
-ServeIQ Phase 2 – Blau-Design mit Audiofeedback
+ServeIQ Phase 2 – Update Startaufstellungen und Bedienung
 
-Installieren: Alle Dateien direkt ins Hauptverzeichnis des GitHub-Pages-Testrepositories hochladen.
+Dateien direkt ins Root von ServeIQ-Phase2-Test hochladen (index.html, drei Bilder und zwei WAV-Dateien).
 
-Audio: service-ascending.wav = kurzer tiefer zu mittlerem Zweiton bei Normaler Service (keine Punktvergabe). point-double.wav = bereits freigegebener Doppelton bei genau einem abgeschlossenen Ballwechsel (Ass, Fehler, Punkt Heim/Gast). Der Ton wird nach einer erfolgreichen Spielsituation abgespielt; Punkt zurück/vor und offener Service abbrechen bleiben ohne Ton.
+Änderungen:
+- Startaufstellungen 1–4 (und 5) teilen die gleiche Feld- und Sprachbedienung.
+- Matchkader-Mehrfachwahl wird sofort lokal gespeichert und grün markiert.
+- Kompakte Teamkaderansicht, Teambearbeitung über Stift, Löschen am Ende.
+- Pflichtangaben: Vorname und Trikotnummer, Nachname und Position optional.
+- Speichern vor Nummernblättern, nicht nutzbares Zurückblättern verborgen.
+- Neue Spielvorbereitung nach sechs regulären Teammitgliedern.
+- Nach einer Speicherung erscheint der Hinweis kurz, nicht dauerhaft.
+- Grosse Punktebuttons mit stabiler Höhe.
 
-Unter Einstellungen: Ein/Aus, Lautstärke und Hörprobe. Audio-Einstellungen werden browserlokal unabhängig von der Spielstandspeicherung gespeichert.
-
-Splash-Screen und Logos sind byte-identisch zur Blue-Theme-Basis. Spielereignislogik unverändert. Vor produktivem Einsatz die App auf dem Zielgerät und im Browser testen.
-
-
-## Update November 2026 – Teams, Sätze, Navigation
-- Teams: Entfernter redundanter Kader-Speichern-Button; Einzeländerungen werden sofort persistent gespeichert, kurzer Hinweis «✓ Gespeichert» (2 Sekunden).
-- Live-Game: Entfernte Buttons «Spiel abbrechen» und «Seite korrigieren» inklusive ihrer UI-Handler. Die Auswertung alter Spielereignisse (SIDE) bleibt für die Kompatibilität erhalten.
-- Satzvorbereitung 2–4: Automatische Service- und Seitenzuordnung wie bisher; redundanten Hinweis entfernt.
-- Satz 5: Erster Service und Seite müssen vor Satzbeginn gewählt werden. Automatischer einmaliger Seitenwechsel nach 8 Punkten; Satzgewinn ab 15 Punkten, mindestens zwei Punkte Differenz.
-- «Punkt vor» nur bei verfügbarer Rücknahme aktiv; nach neuer Aktion wird die Vorwärts-Historie verworfen.
-- SPLASH und Tondateien unverändert.
-
-
-## Update: Navigation und Punkterfassung (09.11.2026)
-- Live-Game: untere Navigation bei direktem Öffnen für 3 Sekunden sichtbar; danach automatische Ausblendung.
-- Erneut öffnen nur mit Griff am unteren Rand oder Wischgeste von unten nach oben.
-- Spielbuttons (Normaler Service, Ass, Servicefehler, Punkt zurück/vor, Wechsel, Statistik, Aufstellung) lassen die Navigation unverändert.
-- Bereits geöffnete Navigation bleibt beim direkten Bedienen/Fokussieren sichtbar; danach erneute Ausblendung.
-- Punkteentscheidung ohne Hauptnavigation, unverändert.
-- Grosse, feste hellblaue Punktebuttons ohne Grössenänderung durch Maus/Stift/Finger; auch nach Servicefehler.
-- VBC-Interlaken-Logo unverändert, Anzeige responsive mit contain.
-- Logos und Splash-Screen-Dateien sind identisch zur vorherigen Version.
+Browser-Spracherkennung ist von Browser/Mikrofonfreigabe/HTTPS abhängig.
+Daten vor dem Hochladen als JSON sichern. Browser-Mikrofontest und vollständige Matchsimulation sind weiterhin notwendig.
