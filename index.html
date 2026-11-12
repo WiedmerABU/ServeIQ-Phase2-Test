@@ -351,6 +351,15 @@ html{scroll-behavior:smooth}body{background:#f2f5f9;color:var(--text)}
 .v7-decision .v7-choice .v7-btn{height:clamp(100px,19vh,145px)!important;min-height:0!important;font-size:clamp(1.04rem,3.9vw,1.45rem)!important;transform:none!important}
 .v7-decision{justify-content:flex-start!important;padding-top:max(22px,env(safe-area-inset-top))!important}
 @media(max-width:510px){.v7-decision .v7-choice .v7-btn{font-size:1.04rem!important;padding:8px 5px!important}}
+
+/* ServeIQ – Startaufstellung: Spracheingabe entfernt, konsistente getrennte Satzaktionen */
+.nextset-modal .set-start-actions{display:flex;flex-direction:column;gap:14px;margin-top:22px;padding:4px 0 16px;align-items:stretch}
+.nextset-modal .set-start-actions>.btn{display:block;width:100%;margin:0;min-height:54px;flex:none;line-height:1.3;position:relative;transform:none}
+.nextset-modal .set-start-actions>[data-action="next-confirm"]{min-height:62px;background:#096bbb;color:#fff;border:1px solid #38a5ee;border-radius:11px;box-shadow:0 3px 0 #064a85,0 5px 12px #031d3855}
+.nextset-modal .set-start-actions>[data-action="modal-close"]{background:#1b5183;color:#fff;border:1px solid #5a9dce;border-radius:11px;box-shadow:0 3px 0 #123657,0 5px 12px #031d3833}
+.nextset-modal .set-start-actions>.btn:hover{filter:brightness(1.06)}
+.nextset-modal .set-start-actions>.btn:active{transform:none}
+@media(max-width:480px){.nextset-modal .set-start-actions{gap:12px;margin-top:18px;padding-bottom:20px}}
 </style><style id="serveiq-blue-theme">
 /* ServeIQ Phase 2: unified brand-blue interface; presentation-only override */
 :root{--blue:#0868bb;--deep:#0b2d54;--pale:#bfe9ff;--border:#376c9d;--text:#f7fbff;color:#f7fbff;background:#0b2d54}
@@ -439,7 +448,77 @@ body:has(.splash) .splash .btn{background:#0874d5!important;color:#fff!important
 .v7-decision .v7-choice .v7-btn{height:clamp(100px,19vh,145px)!important;min-height:0!important;font-size:clamp(1.04rem,3.9vw,1.45rem)!important;transform:none!important}
 .v7-decision{justify-content:flex-start!important;padding-top:max(22px,env(safe-area-inset-top))!important}
 @media(max-width:510px){.v7-decision .v7-choice .v7-btn{font-size:1.04rem!important;padding:8px 5px!important}}
-</style></head><body><div id="app"><main class="loading">ServeIQ 0.2 wird geladen …</main></div><script type="module">// model
+</style>
+<style id="serveiq-point-area-equal-height">
+/* Both point-selection buttons each fill the combined height of the three
+   service actions. All buttons remain static on hover, pen and click. */
+.v7-live, .v7-decision {
+  --siq-service-button-height: clamp(100px, 19vh, 145px);
+  --siq-service-button-gap: 12px;
+  --siq-service-stack-height: calc(3 * var(--siq-service-button-height) + 2 * var(--siq-service-button-gap));
+}
+.v7-live .v7-actions:not(.v7-actions-opponent) {
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  gap: var(--siq-service-button-gap);
+}
+.v7-live .v7-actions:not(.v7-actions-opponent) > .v7-btn {
+  box-sizing: border-box;
+  height: var(--siq-service-button-height) !important;
+  min-height: var(--siq-service-button-height) !important;
+  max-height: var(--siq-service-button-height) !important;
+}
+.v7-live .v7-actions-opponent {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: var(--siq-service-button-gap);
+  height: var(--siq-service-stack-height);
+  align-items: stretch;
+}
+.v7-live .v7-actions-opponent > .v7-btn {
+  box-sizing: border-box;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-wrap: anywhere;
+}
+.v7-decision {
+  box-sizing: border-box;
+  gap: 16px;
+}
+.v7-decision .v7-choice {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  align-items: stretch;
+  gap: var(--siq-service-button-gap);
+  flex: none !important;
+  height: var(--siq-service-stack-height) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+.v7-decision .v7-choice > .v7-btn {
+  box-sizing: border-box;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-wrap: anywhere;
+}
+.v7-live .v7-actions .v7-btn,
+.v7-decision .v7-choice .v7-btn {
+  transform: none !important;
+  transition: background-color .12s ease, filter .12s ease !important;
+}
+.v7-live .v7-actions .v7-btn:hover,
+.v7-live .v7-actions .v7-btn:active,
+.v7-decision .v7-choice .v7-btn:hover,
+.v7-decision .v7-choice .v7-btn:active {transform:none !important;}
+/* On short displays the independent point-decision view may scroll;
+   its point buttons never shrink or overlap the Back button. */
+@media (max-width: 510px) {
+  .v7-decision .v7-choice .v7-btn {font-size:clamp(.98rem,3.7vw,1.2rem) !important;}
+}
+</style>
+</head><body><div id="app"><main class="loading">ServeIQ 0.2 wird geladen …</main></div><script type="module">// model
 /** ServeIQ v0.1 – pure, deterministic volleyball rules and statistics. */
 const VERSION = 1;
 const uid = () => (globalThis.crypto?.randomUUID?.() || `id-${Date.now()}-${Math.random().toString(36).slice(2)}`);
@@ -1091,7 +1170,7 @@ function courtUi(d,t,isNext=false){
    const p=t.players.find(x=>x.id===d.lineup[i]);
    return `<button type="button" class="live-lineup-position volley-slot ${p?'filled':''}" data-action="${isNext?'next-position':'court-position'}" data-pos="${i}" data-drop="${i}" aria-label="Position ${i+1}${p?', '+esc(p.first)+' '+esc(p.last):', frei'}"><small>Position ${i+1}</small><span class="live-lineup-tile">${p?`<strong>${esc(p.number)}</strong><span>${esc(p.first)}</span><small>${esc(names[p.position]||'–')}</small>`:'<strong>＋</strong><span>Spielerin wählen</span>'}</span></button>`;
  };
- return `${voicePanel(d,t,isNext)}${lineupCourtShell(gridOrder.map(slot).join(''),'edit')}<div class="libero-station"><button type="button" class="libero-drop ${d.liberoId?'occupied':''}" data-action="court-libero" data-drop="-1" aria-label="Libera auswählen oder entfernen">${d.liberoId?(()=>{const p=t.players.find(x=>x.id===d.liberoId);return p?`<b>${esc(p.number)}</b><span>${esc(p.first)}</span><small>Libero</small><span class="libero-remove">✕ entfernen</span>`:'+ Libera wählen';})():'+ Libera wählen'}</button><small>Die Libera serviert nicht</small></div><h3>Spielerinnen auswählen / ziehen</h3>${rosterCards(t.players.filter(p=>d.rosterIds.includes(p.id)),[...d.lineup.filter(Boolean),d.liberoId].filter(Boolean),'court-player')}<p class="small muted">Kachel antippen und danach Feldposition bzw. Libera-Platz wählen – oder dorthin ziehen.</p>`;
+ return `${lineupCourtShell(gridOrder.map(slot).join(''),'edit')}<div class="libero-station"><button type="button" class="libero-drop ${d.liberoId?'occupied':''}" data-action="court-libero" data-drop="-1" aria-label="Libera auswählen oder entfernen">${d.liberoId?(()=>{const p=t.players.find(x=>x.id===d.liberoId);return p?`<b>${esc(p.number)}</b><span>${esc(p.first)}</span><small>Libero</small><span class="libero-remove">✕ entfernen</span>`:'+ Libera wählen';})():'+ Libera wählen'}</button><small>Die Libera serviert nicht</small></div><h3>Spielerinnen auswählen / ziehen</h3>${rosterCards(t.players.filter(p=>d.rosterIds.includes(p.id)),[...d.lineup.filter(Boolean),d.liberoId].filter(Boolean),'court-player')}<p class="small muted">Kachel antippen und danach Feldposition bzw. Libera-Platz wählen – oder dorthin ziehen.</p>`;
 }
 function lineupValidation(d){let missing=[];if(d.lineup.filter(Boolean).length!==6)missing.push('Sechs reguläre Spielerinnen aufstellen');if(new Set(d.lineup.filter(Boolean)).size!==d.lineup.filter(Boolean).length)missing.push('Spielerin doppelt aufgestellt');if(d.liberoId&&d.lineup.includes(d.liberoId))missing.push('Libera darf keine Rotationsposition besetzen');if(!d.lineup.filter(Boolean).every(id=>d.rosterIds.includes(id)))missing.push('Nur Matchkader-Spielerinnen einsetzen');if(!d.side)missing.push('Spielfeldseite wählen');if(!d.firstServe)missing.push('Ersten Service festlegen');return missing;}
 function newScreen(){
@@ -1234,7 +1313,7 @@ function modalHtml(){if(!ui.modal)return '';
     <label>Einwechseln<select name="inId" ${valid.length?'':'disabled'}>${bench.map(id=>{const reason=eligible(id);return `<option value="${id}" ${reason?'disabled':''}>${esc(who(m,id))}${reason?' – '+esc(reason):''}</option>`;}).join('')}</select></label>${bench.length?'':'<p class="notice mild">Keine Ersatzspielerin im Matchkader ausserhalb des Feldes vorhanden.</p>'}${!valid.length&&bench.length?'<p class="notice mild">Für diese Spielerin ist aktuell kein regelkonformer Wechsel möglich. Bitte eine andere Spielerin bei «Auswechseln» wählen.</p>':''}
     ${ui.regularError?`<div class="notice error" role="alert">${esc(ui.regularError)}</div>`:''}<button class="btn primary" type="button" data-action="regular-confirm" ${valid.length&&s.regularSubs<6?'':'disabled'}>${ui.regularBusy?'Speichere Wechsel …':'Wechsel bestätigen'}</button><button class="btn secondary" type="button" data-action="modal-close">Abbrechen</button></form></div></div>`;}
   if(ui.modal==='nextset'&&s){const n=s.number+1,prev=st=>st;const o=ui.nextOptions||{lineup:Array(6).fill(''),rosterIds:m.rosterIds,liberoId:s.liberoId,side:n<=4?(s.side==='left'?'right':'left'):'',firstServe:n<=4?opposite(s.firstServe):''};ui.nextOptions=o;const t=m.teamSnapshot;
-   return `<div class="modal-backdrop"><div class="modal nextset-modal"><h2>Startaufstellung – ${n}. Satz</h2><p class="small muted">Stelle die sechs Spielerinnen für diesen Satz neu auf.</p>${courtUi(o,t,true)}${n===5?`<div class="form-stack"><strong>Spielfeldseite ${esc(t.club)}</strong><div class="seg"><button class="btn ${o.side==='left'?'primary':'secondary'}" data-action="next-side" data-val="left">← Links</button><button class="btn ${o.side==='right'?'primary':'secondary'}" data-action="next-side" data-val="right">Rechts →</button></div><strong>Erster Service</strong><div class="seg"><button class="btn ${o.firstServe==='home'?'primary':'secondary'}" data-action="next-serve" data-val="home">${esc(t.club)}</button><button class="btn ${o.firstServe==='away'?'primary':'secondary'}" data-action="next-serve" data-val="away">${esc(m.opponent)}</button></div></div>`:` `}${ui.missing?.length?`<div class="notice error">${ui.missing.map(esc).join(' · ')}</div>`:''}<button class="btn primary huge wide" data-action="next-confirm">Satz ${n} starten</button><button class="btn secondary wide" data-action="modal-close">Zurück</button></div></div>`;}
+   return `<div class="modal-backdrop"><div class="modal nextset-modal"><h2>Startaufstellung – ${n}. Satz</h2><p class="small muted">Stelle die sechs Spielerinnen für diesen Satz neu auf.</p>${courtUi(o,t,true)}${n===5?`<div class="form-stack"><strong>Spielfeldseite ${esc(t.club)}</strong><div class="seg"><button class="btn ${o.side==='left'?'primary':'secondary'}" data-action="next-side" data-val="left">← Links</button><button class="btn ${o.side==='right'?'primary':'secondary'}" data-action="next-side" data-val="right">Rechts →</button></div><strong>Erster Service</strong><div class="seg"><button class="btn ${o.firstServe==='home'?'primary':'secondary'}" data-action="next-serve" data-val="home">${esc(t.club)}</button><button class="btn ${o.firstServe==='away'?'primary':'secondary'}" data-action="next-serve" data-val="away">${esc(m.opponent)}</button></div></div>`:` `}${ui.missing?.length?`<div class="notice error">${ui.missing.map(esc).join(' · ')}</div>`:''}<div class="set-start-actions"><button class="btn primary huge wide" data-action="next-confirm">Satz ${n} starten</button><button class="btn secondary wide" data-action="modal-close">Zurück</button></div></div></div>`;}
   if(ui.modal==='info')return `<div class="modal-backdrop"><div class="modal"><h2>ⓘ Erklärung</h2><p>${esc(infoText[ui.info]||'')}</p><button class="btn primary" data-action="modal-close">Schliessen</button></div></div>`;
   return '';
 }

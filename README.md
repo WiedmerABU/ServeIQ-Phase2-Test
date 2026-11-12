@@ -14,3 +14,7 @@ Dateien direkt ins Root von ServeIQ-Phase2-Test hochladen (index.html, drei Bild
 
 Browser-Spracherkennung ist von Browser/Mikrofonfreigabe/HTTPS abhängig.
 Daten vor dem Hochladen als JSON sichern. Browser-Mikrofontest und vollständige Matchsimulation sind weiterhin notwendig.
+
+Update 2026-11-12: Sprachaufstellung in allen Startaufstellungen ausgeblendet; Satz-starten- und Zurueck-Buttons mit klarem Abstand in Saetzen 2-5. Manuelle Positionierung durch Tippen/Drag-and-Drop bleibt erhalten.
+
+Punktebuttons: Jede der beiden Entscheidungsflaechen ist genau so hoch wie die drei Servicebuttons zusammen, inkl. Zwischenabstaenden. Auch bei gegnerischem Service.
