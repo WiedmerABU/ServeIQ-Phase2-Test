@@ -18,3 +18,5 @@ Daten vor dem Hochladen als JSON sichern. Browser-Mikrofontest und vollständige
 Update 2026-11-12: Sprachaufstellung in allen Startaufstellungen ausgeblendet; Satz-starten- und Zurueck-Buttons mit klarem Abstand in Saetzen 2-5. Manuelle Positionierung durch Tippen/Drag-and-Drop bleibt erhalten.
 
 Punktebuttons: Jede der beiden Entscheidungsflaechen ist genau so hoch wie die drei Servicebuttons zusammen, inkl. Zwischenabstaenden. Auch bei gegnerischem Service.
+
+AKTUALISIERUNG: Die zwei grossen Punktebuttons haben sowohl nach einem normalen Service als auch bei gegnerischem Service die gemeinsame Referenzhoehe der drei Servicebuttons. Die Bildschirmgroesse und Schrift werden responsiv behandelt; die Schaltflaechen vergroessern sich bei Hover nicht.
