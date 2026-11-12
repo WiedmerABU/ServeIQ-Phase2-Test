@@ -518,6 +518,58 @@ body:has(.splash) .splash .btn{background:#0874d5!important;color:#fff!important
   .v7-decision .v7-choice .v7-btn {font-size:clamp(.98rem,3.7vw,1.2rem) !important;}
 }
 </style>
+
+<style id="serveiq-normal-service-point-pair-unified">
+/* Gemeinsame Grössenquelle für normale Serviceentscheidung und gegnerischen Service. */
+.v7-live,.v7-decision {
+  --siq-service-button-height:clamp(100px,19vh,145px);
+  --siq-service-button-gap:12px;
+  --siq-service-stack-height:calc(3 * var(--siq-service-button-height) + 2 * var(--siq-service-button-gap));
+}
+.v7-live .v7-actions-opponent,
+.v7-decision .v7-choice {
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-rows:minmax(0,1fr)!important;
+  gap:var(--siq-service-button-gap)!important;
+  height:var(--siq-service-stack-height)!important;
+  min-height:var(--siq-service-stack-height)!important;
+  max-height:var(--siq-service-stack-height)!important;
+  box-sizing:border-box!important;
+  align-items:stretch!important;
+}
+.v7-decision .v7-choice {flex:0 0 auto!important;}
+.v7-live .v7-actions-opponent > .v7-btn,
+.v7-decision .v7-choice > .v7-btn {
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:none!important;
+  box-sizing:border-box!important;
+  padding:12px 8px!important;
+  font-size:clamp(1.04rem,3.9vw,1.45rem)!important;
+  line-height:1.25!important;
+  border-radius:12px!important;
+  background:#bfe9ff!important;
+  color:#10446e!important;
+  overflow-wrap:anywhere!important;
+  box-shadow:inset 0 2px 1px #ffffff80,0 5px 0 #285977,0 8px 15px #00152b55!important;
+  transform:none!important;
+  transition:filter .12s ease!important;
+}
+.v7-live .v7-actions-opponent > .v7-btn:hover,
+.v7-live .v7-actions-opponent > .v7-btn:active,
+.v7-decision .v7-choice > .v7-btn:hover,
+.v7-decision .v7-choice > .v7-btn:active {
+  transform:none!important;
+}
+/* Nur die bewusste 'Zurück'-Schaltfläche unterhalb der Entscheidung. */
+.v7-decision {justify-content:flex-start!important;}
+@media(max-width:510px){
+  .v7-live .v7-actions-opponent > .v7-btn,
+  .v7-decision .v7-choice > .v7-btn{font-size:clamp(.98rem,3.7vw,1.2rem)!important;}
+}
+</style>
 </head><body><div id="app"><main class="loading">ServeIQ 0.2 wird geladen …</main></div><script type="module">// model
 /** ServeIQ v0.1 – pure, deterministic volleyball rules and statistics. */
 const VERSION = 1;
