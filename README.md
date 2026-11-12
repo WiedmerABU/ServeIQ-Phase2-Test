@@ -23,3 +23,5 @@ AKTUALISIERUNG: Die zwei grossen Punktebuttons haben sowohl nach einem normalen 
 
 
 Update: Punkteentscheidung nach Normaler Service hat dieselbe Höhe, Breite, Abstände und Typografie wie die zwei Punktebuttons bei gegnerischem Service. Servicefehler vergibt weiterhin sofort einen Gegnerpunkt. Kein Hover-Zoom.
+
+Normaler Service: Punktentscheidung jetzt im normalen Live-Game-Aufbau mit Scoreboard und exakt gleich grossen Punktebuttons wie bei gegnerischem Service. Noch kein Punkt bis Gewinnerwahl. Zurueck verwirft nur offenen Service. Werkzeugbuttons waehrend der offenen Entscheidung deaktiviert.

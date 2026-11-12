@@ -570,6 +570,15 @@ body:has(.splash) .splash .btn{background:#0874d5!important;color:#fff!important
   .v7-decision .v7-choice > .v7-btn{font-size:clamp(.98rem,3.7vw,1.2rem)!important;}
 }
 </style>
+
+<style id="serveiq-normal-service-match-live-layout">
+/* Der Normal-Service-Entscheid hat dasselbe Layout wie der gegnerische Service. */
+.v7-pending-live .v7-actions-opponent{margin-top:12px!important;}
+.v7-pending-live .v7-tools{margin-top:20px!important;}
+.v7-pending-live .v7-tool:disabled,.v7-pending-live .v7-lineup-btn:disabled{opacity:.55;cursor:not-allowed;}
+.v7-pending-live .v7-actions-opponent > .v7-btn:hover,
+.v7-pending-live .v7-actions-opponent > .v7-btn:active{transform:none!important;}
+</style>
 </head><body><div id="app"><main class="loading">ServeIQ 0.2 wird geladen …</main></div><script type="module">// model
 /** ServeIQ v0.1 – pure, deterministic volleyball rules and statistics. */
 const VERSION = 1;
@@ -1251,16 +1260,23 @@ function v7ScoreBoard(m,st,s){
  const whoServes=s.server==='home'?`<span class="v7-server-number">${esc(server?.number??'–')}</span><span class="v7-server-name">${esc(server?.first||'–')}</span>`:`<span class="v7-server-opponent">${esc(m.opponent)}</span>`;
  return `<section class="v7-board" aria-label="Aktueller Spielstand"><div class="v7-score">${home(homeFirst?'home':'away')}<div class="v7-set"><small>Satz ${s.number}</small><strong>${leftSet} : ${rightSet}</strong></div>${home(homeFirst?'away':'home')}</div><div class="v7-service-label">Service ${esc(s.server==='home'?m.teamSnapshot.club:m.opponent)}</div><div class="v7-server">${whoServes}</div></section>`;
 }
-function v7DecisionScreen(m,s){
+function v7DecisionScreen(m,st,s){
+ // Die Punkteentscheidung nutzt exakt denselben Live-Game-Aufbau und
+ // dieselben grossen Punktebuttons wie beim gegnerischen Service.
+ // Der noch offene NORMAL-Service ist dabei kein gewerteter Punkt.
  const h=`<button class="v7-btn v7-green" data-action="rally" data-kind="normal" data-winner="home">Punkt<br>${esc(m.teamSnapshot.club)}</button>`;
  const g=`<button class="v7-btn v7-red" data-action="rally" data-kind="normal" data-winner="away">Punkt<br>${esc(m.opponent)}</button>`;
- return `<div class="v7-decision" role="region" aria-label="Punktgewinner wählen"><div class="v7-choice">${s.side==='left'?h+g:g+h}</div><button class="v7-back" data-action="normal-cancel">← Zurück</button></div>`;
+ const actions=`<div class="v7-actions v7-actions-opponent" role="group" aria-label="Punktgewinner wählen">${s.side==='left'?h+g:g+h}</div>`;
+ // Während einer noch offenen Entscheidung keine weiteren Aktionen zulassen;
+ // Zurück verwirft nur den unvollständigen Service-Eintrag.
+ const tools=`<div class="v7-tools" role="group" aria-label="Spielaktionen"><button class="v7-tool" disabled>↶<small>Punkt zurück</small></button><button class="v7-tool" disabled>⇄<small>Wechsel</small></button><button class="v7-tool" disabled>▥<small>Statistik</small></button><button class="v7-tool" disabled>↷<small>Punkt vor</small></button></div><button class="v7-lineup-btn" disabled>▦ Aktuelle Aufstellung</button>`;
+ return `<div class="v7-live v7-pending-live"><button class="btn secondary" data-action="normal-cancel">← Zurück</button><h1>Live-Game</h1>${v7ScoreBoard(m,st,s)}${actions}${tools}</div>`;
 }
 function liveScreen(){let m=mcurrent();if(!m||m.archivedEarly)m=activeMatch();
  if(!m)return `${back()}<h1>Live-Game</h1><div class="empty">Kein laufendes Spiel vorhanden.<br><button class="btn primary" data-action="nav" data-view="new">Neues Spiel eröffnen</button></div>`;
  ui.matchId=m.id;const st=replay(m),s=st.current;if(st.error)return `${back()}<div class="notice error"><b>Spielverlauf fehlerhaft</b><p>${esc(st.error)}</p><button class="btn secondary" data-action="nav" data-view="teams">Zu Teams</button><button class="btn secondary" data-action="json-export">Datensicherung herunterladen</button></div>`;
  if(!s||s.winner)return endOfSet(m,st);
- if(s.pending)return v7DecisionScreen(m,s);
+ if(s.pending)return v7DecisionScreen(m,st,s);
  const own=s.side==='left';let actions='';
  if(s.server==='home')actions=`<div class="v7-actions"><button class="v7-btn v7-green" data-action="normal">Normaler Service</button><button class="v7-btn v7-green" data-action="rally" data-kind="ace" data-winner="home">Ass</button><button class="v7-btn v7-red" data-action="rally" data-kind="fault" data-winner="away">Servicefehler</button></div>`;
  else{
